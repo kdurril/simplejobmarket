@@ -99,8 +99,9 @@ class PositionsModel(db.Model):
     date_open = db.Column(db.String(120))
     date_closed = db.Column(db.String(120))
     available = db.Column(db.String(120))
-    supervisor_id = db.Column(db.Integer, db.ForeignKey('SupervisorsModel.supervisor_id'), nullable=False)
-    supervisor = db.relationship("SupervisorsModel", primaryjoin=PositionsModel.supervisor_id == SupervisorsModel.supervisor_id, viewonly=True)
+    supervisor_id = db.Column(db.Integer, db.ForeignKey('jobmarket.supervisors.supervisor_id'), nullable=False)
+    supervisor = db.relationship("SupervisorsModel", backref=db.backref('supervisors'))
+        #primaryjoin=supervisor_id == supervisors.supervisor_id, viewonly=True)
     #position_app = db.relationship('PositionApps', backref='Positions',
     #                                lazy='dynamic')
 
@@ -135,8 +136,8 @@ class PositionApps(db.Model):
     __tablename__ = 'positionapps'
     __table_args__ = {"schema":"jobmarket"}
     app_id = db.Column(db.Integer)
-    position_id = db.Column(db.Integer, db.ForeignKey('Positions.position_id'), primary_key=True)
-    student_uid = db.Column(db.String(120), db.ForeignKey('Students.student_uid'), primary_key=True)
+    position_id = db.Column(db.Integer, db.ForeignKey('jobmarket.positions.position_id'), primary_key=True)
+    student_uid = db.Column(db.String(120), db.ForeignKey('jobmarket.students.student_uid'), primary_key=True)
     positions = db.relationship('Positions', secondaryjoin=position_id == Positions.position_id)
     students = db.relationship('Students', primaryjoin=student_uid == Students.student_uid)
     
