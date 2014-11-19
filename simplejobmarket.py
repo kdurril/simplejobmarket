@@ -9,8 +9,8 @@ db = SQLAlchemy(app)
 
 
 
-class Students(db.Model):
-    __tablename__ = 'Students'
+class StudentsModel(db.Model):
+    __tablename__ = 'students'
     __table_args__ = {"schema":"jobmarket"}
     
     student_uid = db.Column(db.String(120), primary_key=True)
@@ -26,10 +26,9 @@ class Students(db.Model):
     credit_spring =  db.Column(db.Integer)
     request201408 = db.Column(db.String(120))
     request201501 = db.Column(db.String(120))
-    position_apps = db.relationship("PositionApps", backref='Students',
-                                lazy='dynamic')
+    #position_apps = db.relationship("PositionApps", backref='Students',
+    #                            lazy='dynamic')
     
-
     def __init__(self, student_uid=None, name_last=None,
                 name_first=None, email=None,
                 phone=None, major=None,
@@ -55,7 +54,7 @@ class Students(db.Model):
         return '<Student {0}>'.format(self.student_uid)
 
 
-class Supervisors(db.Model):
+class SupervisorsModel(db.Model):
     __tablename__ = 'supervisors'
     __table_args__ = {"schema":"jobmarket"}
     supervisor_id = db.Column(db.Integer, primary_key=True)
@@ -65,7 +64,7 @@ class Supervisors(db.Model):
     email = db.Column(db.String(120))
     room = db.Column(db.String(120))
     center = db.Column(db.String(120))
-    position = db.relationship("Positions", backref='Supervisors',
+    position = db.relationship("PositionsModel", backref='supervisors',
                                 lazy='dynamic')
 
     def __init__(self, supervisor_id=None, 
@@ -80,11 +79,10 @@ class Supervisors(db.Model):
         self.room = room
         self.center = center
         
-
     def __repr__(self):
         return '<Supservisor {0}>'.format(self.supervisor_id)
 
-class Positions(db.Model):
+class PositionsModel(db.Model):
     __tablename__ = 'positions'
     __table_args__ = {"schema":"jobmarket"}
     position_id  = db.Column(db.Integer, primary_key=True)
@@ -101,9 +99,10 @@ class Positions(db.Model):
     date_open = db.Column(db.String(120))
     date_closed = db.Column(db.String(120))
     available = db.Column(db.String(120))
-    supervisor_id = db.Column(db.Integer, db.ForeignKey('Supervisors.supervisor_id'), nullable=False)
-    supervisor = db.relationship("Supervisors", primaryjoin=supervisor_id == Supervisors.supervisor_id, viewonly=True)
-    position_app = db.relationship('PositionApps', backref='Positions')
+    supervisor_id = db.Column(db.Integer, db.ForeignKey('SupervisorsModel.supervisor_id'), nullable=False)
+    supervisor = db.relationship("SupervisorsModel", primaryjoin=PositionsModel.supervisor_id == SupervisorsModel.supervisor_id, viewonly=True)
+    #position_app = db.relationship('PositionApps', backref='Positions',
+    #                                lazy='dynamic')
 
     def __init__(self, position_id=None,
                 title=None, work_group=None, position_type=None,
@@ -131,15 +130,16 @@ class Positions(db.Model):
     def __repr__(self):
         return '<Position {0}>'.format(self.position_id)
 
-
+other = '''
 class PositionApps(db.Model):
-    __tablename__ = 'PositionApps'
+    __tablename__ = 'positionapps'
     __table_args__ = {"schema":"jobmarket"}
     app_id = db.Column(db.Integer)
     position_id = db.Column(db.Integer, db.ForeignKey('Positions.position_id'), primary_key=True)
     student_uid = db.Column(db.String(120), db.ForeignKey('Students.student_uid'), primary_key=True)
-    students = db.relationship('Students', primaryjoin=student_uid == Students.student_uid)
     positions = db.relationship('Positions', secondaryjoin=position_id == Positions.position_id)
+    students = db.relationship('Students', primaryjoin=student_uid == Students.student_uid)
+    
     offers = db.relationship('Offers', backref='PositionApps',
                                 lazy='dynamic')
     db.UniqueConstraint('position_id', 'student_uid', name='unique_app')
@@ -150,17 +150,15 @@ class PositionApps(db.Model):
 
     def __init__(self, app_id=None,
                 position_id=None,
-                student_id=None,
+                student_id=None
                 ):
 
         self.app_id = app_id
         self.position_id = position_id
         self.student_uid = student_uid
 
-
     def __repr__(self):
         return '<Application {0}>'.format(self.app_id)
-
 
 class Offers(db.Model):
     __tablename__ = 'offers'
@@ -188,3 +186,5 @@ class Offers(db.Model):
 
     def __repr__(self):
         return '<Application {0}>'.format(self.app_id)
+
+'''
