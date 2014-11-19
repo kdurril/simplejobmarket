@@ -101,10 +101,7 @@ class PositionsModel(db.Model):
     available = db.Column(db.String(120))
     supervisor_id = db.Column(db.Integer, db.ForeignKey('jobmarket.supervisors.supervisor_id'), nullable=False)
     supervisor = db.relationship("SupervisorsModel", backref=db.backref('supervisors'))
-        #primaryjoin=supervisor_id == supervisors.supervisor_id, viewonly=True)
-    #position_app = db.relationship('PositionApps', backref='Positions',
-    #                                lazy='dynamic')
-
+    
     def __init__(self, position_id=None,
                 title=None, work_group=None, position_type=None,
                 course=None, program_min=None, program_std=None,
@@ -131,18 +128,23 @@ class PositionsModel(db.Model):
     def __repr__(self):
         return '<Position {0}>'.format(self.position_id)
 
-other = '''
-class PositionApps(db.Model):
+
+class PositionAppsModel(db.Model):
     __tablename__ = 'positionapps'
     __table_args__ = {"schema":"jobmarket"}
     app_id = db.Column(db.Integer)
-    position_id = db.Column(db.Integer, db.ForeignKey('jobmarket.positions.position_id'), primary_key=True)
-    student_uid = db.Column(db.String(120), db.ForeignKey('jobmarket.students.student_uid'), primary_key=True)
-    positions = db.relationship('Positions', secondaryjoin=position_id == Positions.position_id)
-    students = db.relationship('Students', primaryjoin=student_uid == Students.student_uid)
+    position_id = db.Column(db.Integer, 
+        db.ForeignKey('jobmarket.positions.position_id'), primary_key=True)
+    student_uid = db.Column(db.String(120), 
+        db.ForeignKey('jobmarket.students.student_uid'), primary_key=True)
+    positions = db.relationship('PositionsModel', backref=db.backref('positions'))
+    students = db.relationship('StudentsModel', backref=db.backref('students'))
+    db.UniqueConstraint('position_id', 'student_uid', name='unique_app')
+    #positions = db.relationship('PositionsModel', secondaryjoin=position_id == PositionsModel.position_id)
+    #students = db.relationship('StudentsModel', primaryjoin=student_uid == StudentsModel.student_uid)
     
-    offers = db.relationship('Offers', backref='PositionApps',
-                                lazy='dynamic')
+    #offers = db.relationship('Offers', backref='positionapps',
+    #                            lazy='dynamic')
     db.UniqueConstraint('position_id', 'student_uid', name='unique_app')
     #students = db.relationship('Students') #, backref="positionapps"
     #offers = db.relationship('Offers') 
@@ -151,8 +153,7 @@ class PositionApps(db.Model):
 
     def __init__(self, app_id=None,
                 position_id=None,
-                student_id=None
-                ):
+                student_id=None):
 
         self.app_id = app_id
         self.position_id = position_id
@@ -160,7 +161,7 @@ class PositionApps(db.Model):
 
     def __repr__(self):
         return '<Application {0}>'.format(self.app_id)
-
+other = '''
 class Offers(db.Model):
     __tablename__ = 'offers'
     __table_args__ = {"schema":"jobmarket"}
