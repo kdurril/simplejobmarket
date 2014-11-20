@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block body %}
+<table class=position>
+    <tr>
+        <th>Postion ID</th>
+        <th>Title</th>
+        <th>Work Group</th>
+        <th>Type</th>
+        <th>Course</th>
+        <th>Minimum level</th>
+        <th>Standard level</th>
+        <th>Overview</th>
+        <th>Duties</th>
+        <th>Necessary Skill</th>
+        <th>Additional Skill</th>
+        <th>Opening Date</th>
+        <th>Closing Date</th>
+        <th>Quantity Available</th>
+        <th>Supervisor</td>
+    </tr>
+    
+{% for entry in position_list %}
+    <tr>
+        <td>entry.position_id</td>
+        <td>entry.title</td>
+        <td>entry.workGroup</td>
+        <td>entry.position_type</td>
+        <td>entry.course</td>
+        <td>entry.programMin</td>
+        <td>entry.programStd</td>
+        <td>entry.positionOverview</td>
+        <td>entry.primarySkill</td>
+        <td>entry.necessarySkill</td>
+        <td>entry.preferredSkill</td>
+        <td>entry.dateOpen</td>
+        <td>entry.dateClosed</td>
+        <td>entry.available</td>
+        <td>entry.supervisor_id</td>
+    <tr>
+{% endfor %}
+</table>
+{% endblock %}
+

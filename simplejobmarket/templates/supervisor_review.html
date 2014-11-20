@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block body %}
+<table class=supervisor>
+    <tr>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Office</th>
+        <th>Center</th>
+    </tr>
+    
+{% for entry in supervisor_list %}
+    <tr>
+        <td>entry.nameFirst</td>
+        <td>entry.nameLast</td>
+        <td>entry.email</td>
+        <td>entry.phone</td>
+        <td>entry.room</td>
+        <td>entry.center</td>
+    <tr>
+{% endfor %}
+</table>
+{% endblock %}
