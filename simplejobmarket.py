@@ -26,7 +26,7 @@ class StudentsModel(db.Model):
     credit_spring =  db.Column(db.Integer)
     request201408 = db.Column(db.String(120))
     request201501 = db.Column(db.String(120))
-    position_apps = db.relationship("PositionAppsModel", backref='students',
+    position_apps = db.relationship("PositionAppsModel", backref=db.backref('students'),
                                 lazy='dynamic')
     
     def __init__(self, student_uid=None, name_last=None,
@@ -64,8 +64,9 @@ class SupervisorsModel(db.Model):
     email = db.Column(db.String(120))
     room = db.Column(db.String(120))
     center = db.Column(db.String(120))
-    position = db.relationship("PositionsModel", backref='supervisors',
-                                lazy='dynamic')
+    position = db.relationship("PositionsModel", 
+                            backref=db.backref('supervisors'),
+                            lazy='dynamic')
 
     def __init__(self, supervisor_id=None, 
                 name_last=None, name_first=None,
@@ -137,8 +138,6 @@ class PositionAppsModel(db.Model):
         db.ForeignKey('jobmarket.positions.position_id'), primary_key=True)
     student_uid = db.Column(db.String(120), 
         db.ForeignKey('jobmarket.students.student_uid'), primary_key=True)
-    positions = db.relationship('PositionsModel', backref=db.backref('positions'))
-    students = db.relationship('StudentsModel', backref=db.backref('students'))
     db.UniqueConstraint('position_id', 'student_uid', name='unique_app')
     #positions = db.relationship('PositionsModel', secondaryjoin=position_id == PositionsModel.position_id)
     #students = db.relationship('StudentsModel', primaryjoin=student_uid == StudentsModel.student_uid)
