@@ -26,8 +26,8 @@ class StudentsModel(db.Model):
     credit_spring =  db.Column(db.Integer)
     request201408 = db.Column(db.String(120))
     request201501 = db.Column(db.String(120))
-    position_apps = db.relationship("PositionAppsModel", backref=db.backref('students'),
-                                lazy='dynamic')
+    position_apps = db.relationship("PositionAppsModel", 
+        backref=db.backref('students'), lazy='dynamic')
     
     def __init__(self, student_uid=None, name_last=None,
                 name_first=None, email=None,
@@ -100,8 +100,10 @@ class PositionsModel(db.Model):
     date_open = db.Column(db.String(120))
     date_closed = db.Column(db.String(120))
     available = db.Column(db.String(120))
-    supervisor_id = db.Column(db.Integer, db.ForeignKey('jobmarket.supervisors.supervisor_id'), nullable=False)
-    position_apps = db.relationship("PositionAppsModel", backref=db.backref('positions'))
+    supervisor_id = db.Column(db.Integer, 
+        db.ForeignKey('jobmarket.supervisors.supervisor_id'), nullable=False)
+    position_apps = db.relationship("PositionAppsModel", 
+        backref=db.backref('positions'))
     
     def __init__(self, position_id=None,
                 title=None, work_group=None, position_type=None,
@@ -133,22 +135,15 @@ class PositionsModel(db.Model):
 class PositionAppsModel(db.Model):
     __tablename__ = 'positionapps'
     __table_args__ = {"schema":"jobmarket"}
-    app_id = db.Column(db.Integer)
+    app_id = db.Column(db.Integer, primary_key=True)
     position_id = db.Column(db.Integer, 
-        db.ForeignKey('jobmarket.positions.position_id'), primary_key=True)
+        db.ForeignKey('jobmarket.positions.position_id'))
     student_uid = db.Column(db.String(120), 
-        db.ForeignKey('jobmarket.students.student_uid'), primary_key=True)
+        db.ForeignKey('jobmarket.students.student_uid'))
     db.UniqueConstraint('position_id', 'student_uid', name='unique_app')
-    #positions = db.relationship('PositionsModel', secondaryjoin=position_id == PositionsModel.position_id)
-    #students = db.relationship('StudentsModel', primaryjoin=student_uid == StudentsModel.student_uid)
+    offers = db.relationship('OffersModel', backref=db.backref('positionapps'),
+                                lazy='dynamic')
     
-    #offers = db.relationship('Offers', backref='positionapps',
-    #                            lazy='dynamic')
-    #students = db.relationship('Students') #, backref="positionapps"
-    #offers = db.relationship('Offers') 
-        #,backref=db.backref('positionapps', lazy='joined', uselist=False),
-        #lazy='dynamic')
-
     def __init__(self, app_id=None,
                 position_id=None,
                 student_uid=None):
@@ -160,32 +155,30 @@ class PositionAppsModel(db.Model):
     def __repr__(self):
         return '<Application {0}>'.format(self.app_id)
 
-other = '''
-class Offers(db.Model):
+
+class OffersModel(db.Model):
     __tablename__ = 'offers'
     __table_args__ = {"schema":"jobmarket"}
     offer_id = db.Column(db.Integer, primary_key=True)
-    app_id = db.Column(db.Integer, db.ForeignKey('PositionApps.app_id'))
-    offer_made = db.Column(db.String(120))
-    offer_date = db.Column(db.String(120))
+    app_id = db.Column(db.Integer, 
+        db.ForeignKey('jobmarket.positionapps.app_id'))
+    offermade = db.Column(db.String(120))
+    offer_date = db.Column(db.Date)
     response = db.Column(db.String(120))
-    response_date = db.Column(db.String(120))
+    response_date = db.Column(db.Date)
     available = db.Column(db.String(120))
-    position_apps = db.relationship('PositionApps',primaryjoin=app_id == PositionApps.app_id)
-
+    
     def __init__(self, offer_id=None, app_id=None,
-                offer_made=None, offer_date=None,
+                offermade=None, offer_date=None,
                 response=None, response_date=None,
                 available=None):
         self.offer_id = offer_id
         self.app_id = app_id
-        self.offer_made = offerMade
+        self.offermade = offermade
         self.offer_date = offer_date
         self.response = response
         self.response_date = response_date
         self.available = available
-
+        
     def __repr__(self):
         return '<Application {0}>'.format(self.app_id)
-
-'''
