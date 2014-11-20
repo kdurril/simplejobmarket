@@ -28,7 +28,7 @@ app.add_url_rule('/supervisors/',\
 app.add_url_rule('/supervisors/<int:supervisor_id>',\
 	view_func=SupervisorView.as_view('supervisors'),\
 	methods=['GET', 'PUT', 'DELETE'])
-Move to urls
+#Move to urls
 app.add_url_rule('/positions/',\
 	view_func=PositionView.as_view('positions'),\
 	methods=['GET',])
