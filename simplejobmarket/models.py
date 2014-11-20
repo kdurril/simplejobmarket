@@ -2,7 +2,7 @@
 from simplejobmarket import app
 from flask_sqlalchemy import SQLAlchemy
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://kdurril:4054756umd@localhost/postgres'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://user:pass@localhost/postgres'
 db = SQLAlchemy(app)
 
 
