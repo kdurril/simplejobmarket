@@ -26,8 +26,8 @@ class StudentsModel(db.Model):
     credit_spring =  db.Column(db.Integer)
     request201408 = db.Column(db.String(120))
     request201501 = db.Column(db.String(120))
-    #position_apps = db.relationship("PositionApps", backref='Students',
-    #                            lazy='dynamic')
+    position_apps = db.relationship("PositionAppsModel", backref='students',
+                                lazy='dynamic')
     
     def __init__(self, student_uid=None, name_last=None,
                 name_first=None, email=None,
@@ -100,7 +100,7 @@ class PositionsModel(db.Model):
     date_closed = db.Column(db.String(120))
     available = db.Column(db.String(120))
     supervisor_id = db.Column(db.Integer, db.ForeignKey('jobmarket.supervisors.supervisor_id'), nullable=False)
-    supervisor = db.relationship("SupervisorsModel", backref=db.backref('supervisors'))
+    position_apps = db.relationship("PositionAppsModel", backref=db.backref('positions'))
     
     def __init__(self, position_id=None,
                 title=None, work_group=None, position_type=None,
@@ -145,7 +145,6 @@ class PositionAppsModel(db.Model):
     
     #offers = db.relationship('Offers', backref='positionapps',
     #                            lazy='dynamic')
-    db.UniqueConstraint('position_id', 'student_uid', name='unique_app')
     #students = db.relationship('Students') #, backref="positionapps"
     #offers = db.relationship('Offers') 
         #,backref=db.backref('positionapps', lazy='joined', uselist=False),
@@ -153,7 +152,7 @@ class PositionAppsModel(db.Model):
 
     def __init__(self, app_id=None,
                 position_id=None,
-                student_id=None):
+                student_uid=None):
 
         self.app_id = app_id
         self.position_id = position_id
@@ -161,6 +160,7 @@ class PositionAppsModel(db.Model):
 
     def __repr__(self):
         return '<Application {0}>'.format(self.app_id)
+
 other = '''
 class Offers(db.Model):
     __tablename__ = 'offers'
