@@ -168,17 +168,17 @@ class StudentView(MethodView):
         current_student = [student_update]
         form = StudentForm()
         
-        student_update.studentUid=form.studentUid.data
-        student_update.nameLast=form.nameLast.data
-        student_update.nameFirst=form.nameFirst.data
+        student_update.student_uid=form.student_uid.data
+        student_update.name_last=form.name_last.data
+        student_update.name_first=form.name_first.data
         student_update.email=form.email.data
         student_update.phone=form.phone.data
         student_update.major=form.major.data
-        student_update.programCode=form.programCode.data
-        student_update.semBegin=form.semBegin.data
-        student_update.graduationExpected=form.graduationExpected.data
-        student_update.creditFall=form.creditFall.data
-        student_update.creditSpring=form.creditSpring.data 
+        student_update.program_code=form.program_code.data
+        student_update.sem_begin=form.sem_begin.data
+        student_update.graduation_expected=form.graduation_expected.data
+        student_update.credit_fall=form.credit_fall.data
+        student_update.credit_spring=form.credit_spring.data 
         student_update.request201408=form.request201408.data
         student_update.request201501=form.request201501.data
 
@@ -186,17 +186,17 @@ class StudentView(MethodView):
 
         if form.validate_on_submit():
             
-            student_update.studentUid=form.studentUid.data
-            student_update.nameLast=form.nameLast.data
-            student_update.nameFirst=form.nameFirst.data
+            student_update.student_uid=form.student_uid.data
+            student_update.name_last=form.name_last.data
+            student_update.name_first=form.name_first.data
             student_update.email=form.email.data
             student_update.phone=form.phone.data
             student_update.major=form.major.data
-            student_update.programCode=form.programCode.data
-            student_update.semBegin=form.semBegin.data
-            student_update.graduationExpected=form.graduationExpected.data
-            student_update.creditFall=form.creditFall.data
-            student_update.creditSpring=form.creditSpring.data 
+            student_update.program_code=form.program_code.data
+            student_update.sem_begin=form.sem_begin.data
+            student_update.graduation_expected=form.graduation_expected.data
+            student_update.credit_fall=form.credit_fall.data
+            student_update.credit_spring=form.credit_spring.data 
             student_update.request201408=form.request201408.data
             student_update.request201501=form.request201501.data
 
@@ -209,7 +209,7 @@ class StudentView(MethodView):
     def delete(self, student_id):
         "delete student record"
         student = StudentModel()
-        student_delete = student.query.get(student_id)
+        student_delete = student.query.get(student_uid)
         db.delete(student_delete)
 
         return redirect(url_for('student_view'))
@@ -227,7 +227,7 @@ class StudentView(MethodView):
             #need an object and a list containing object for template
             #
 
-            student = student.query.get(student_id)
+            student = student.query.get(student_uid)
             current_student = student
             form = StudentForm(obj=student)
             #student.populate_obj(form)
@@ -245,7 +245,8 @@ class StudentView(MethodView):
             #form.request201408.data = student.request201408
             #form.request201501.data = student.request201501
                 
-            return render_template('student_update.html', student_id=student_id, student_list=[current_student], form=form)
+            return render_template('student_update.html', student_id=student_id, 
+                student_list=[current_student], form=form)
 
 
         #return render_template('student_reveiw.html', students=students)
