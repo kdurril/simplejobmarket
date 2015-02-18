@@ -1,6 +1,6 @@
 ﻿-- Internal Job Market
 -- postgresql version
-
+CREATE Schema If Not Exists jobmarket;
 DROP TABLE IF EXISTS jobmarket.students CASCADE;
 DROP TABLE IF EXISTS jobmarket.supervisors CASCADE;
 DROP TABLE IF EXISTS jobmarket.positions CASCADE;
@@ -47,9 +47,9 @@ necessary_skill TEXT,
 preferred_skill TEXT,
 date_open Date,
 date_closed Date,
-available DATE NOT NULL,
+available INTEGER NOT NULL,
 supervisor_id TEXT,
-CONSTRAINT FKsupervisor FOREIGN KEY (supervisor_id) REFERENCES jobmarket.supervisors;
+CONSTRAINT FKsupervisor FOREIGN KEY (supervisor_id) REFERENCES jobmarket.supervisors,
 CHECK (positions.available >= 0)
 );
 
@@ -69,7 +69,7 @@ offer_date timestamp default current_date,
 response TEXT,
 response_date timestamp default current_timestamp,
 available TEXT,
-CONSTRAINT FKpositionApp FOREIGN KEY (app_id) REFERENCES jobmarket.positionApps;
+CONSTRAINT FKpositionApp FOREIGN KEY (app_id) REFERENCES jobmarket.positionApps,
 CONSTRAINT CHK_offer_response UNIQUE (app_id, response)
 );
 
