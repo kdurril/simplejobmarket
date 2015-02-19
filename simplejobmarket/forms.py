@@ -39,8 +39,8 @@ class StudentForm(Form):
     graduation_expected  = TextField('Expected Graduation', validators=[Length(min=1, max=25)])
     credit_fall = TextField('Fall Credit', validators=[Length(min=1, max=25)])
     credit_spring = TextField('Spring Credit', validators=[Length(min=1, max=25)])
-    request201408 = BooleanField('Fall Request', validators=[Required()])
-    request201501 = BooleanField('Spring Request', validators=[Required()])
+    request_fall = BooleanField('Fall Request', validators=[Required()])
+    request_spring = BooleanField('Spring Request', validators=[Required()])
     
 class SupervisorForm(Form):
     name_last = TextField('Last Name', validators=[Length(min=2, max=25)])

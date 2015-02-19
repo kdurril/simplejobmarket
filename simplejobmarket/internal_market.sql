@@ -7,6 +7,19 @@ DROP TABLE IF EXISTS jobmarket.positions CASCADE;
 DROP TABLE IF EXISTS jobmarket.positionApps CASCADE;
 DROP TABLE IF EXISTS jobmarket.offers;
 
+CREATE TABLE jobmarket.roles(
+role_id Serial PRIMARY KEY,
+name TEXT NOT NULL
+);
+
+CREATE TABLE jobmarket.users(
+user_id TEXT PRIMARY KEY,
+username TEXT NOT NULL UNIQUE,
+passwordhash TEXT,
+role_id INTEGER,
+CONSTRAINT FKrole FOREIGN KEY (role_id) REFERENCES jobmarket.roles,
+);
+
 CREATE TABLE jobmarket.students(
 student_uid TEXT PRIMARY KEY,
 name_last TEXT NOT NULL,
@@ -19,8 +32,8 @@ sem_begin TEXT,
 graduation_expected TEXT,
 credit_fall INTEGER NOT NULL,
 credit_spring INTEGER NOT NULL,
-request201408 BOOLEAN NOT NULL,
-request201501 BOOLEAN NOT NULL
+request_fall BOOLEAN NOT NULL,
+request_spring BOOLEAN NOT NULL
 );
 
 CREATE TABLE jobmarket.supervisors(

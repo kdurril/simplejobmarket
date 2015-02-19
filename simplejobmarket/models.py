@@ -1,11 +1,57 @@
 #Flask-SQLAlchemy ORM models 
 from simplejobmarket import app
 from flask_sqlalchemy import SQLAlchemy
+from werkzeug.security import generate_password_hash, check_password_hash
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://user:pass@localhost/postgres'
+app.config['SQLALCHEMY_DATABASE_URI']=
 db = SQLAlchemy(app)
+'''
+class RoleModel(db.Model):
+    __table__ = 'roles'
+    __table_args__ ={"schema":"jobmarket"}
 
+    role_id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(24), unique=True)
 
+    def __init__(self, role_id=None, name=None):
+        self.role_id=role_id
+        self.name=name
+
+    def __repr__(self):
+        return 'Role Name {0}'.format(self.name)
+
+class UserModel(db.Model):
+    __tablename__ = 'users'
+    __table_args__ = {"schema":"jobmarket"}
+
+    user_id = db.Column(db.String(120), primary_key=True)
+    username = db.Column(db.String(120), unique=True, index=True)
+    passwordhash = db.Column(db.String(128))
+    role_id = db.Column(db.Integer,db.ForeignKey('roles.role_id'))
+
+    def __init__(self, user_id=None, username=None, 
+                       passwordhash=None, role_id=None):
+        self.user_id = user_id
+        self.username = username
+        self.passwordhash = passwordhash
+        self.role_id = role_id
+
+    def __repr__(self):
+        return '<Username {0}>, <User ID {1}>'\
+        .format(self.username, self.user_id)
+
+    @property
+    def password(self):
+        raise AttributeError('password is not readable attribute')
+
+    @password.setter
+    def password(self,password):
+        self.password_hash = generate_password_hash(password)
+
+    def verify_password(self,password):
+        return check_password_hash(self.password_hash,password)
+
+'''
 class StudentModel(db.Model):
     __tablename__ = 'students'
     __table_args__ = {"schema":"jobmarket"}
@@ -21,8 +67,8 @@ class StudentModel(db.Model):
     graduation_expected  = db.Column(db.String(120))
     credit_fall  = db.Column(db.Integer)
     credit_spring =  db.Column(db.Integer)
-    request201408 = db.Column(db.String(120))
-    request201501 = db.Column(db.String(120))
+    request_fall = db.Column(db.String(120))
+    request_spring = db.Column(db.String(120))
     position_apps = db.relationship("PositionAppModel", 
         backref=db.backref('students'), lazy='dynamic')
     
@@ -31,8 +77,8 @@ class StudentModel(db.Model):
                 phone=None, major=None,
                 program_code=None, sem_begin=None,
                 graduation_expected=None, credit_fall=None,
-                credit_spring=None, request201408=None,
-                request201501=None):
+                credit_spring=None, request_fall=None,
+                request_spring=None):
         self.student_uid =  student_uid
         self.name_last = name_last
         self.name_first = name_first
@@ -44,8 +90,8 @@ class StudentModel(db.Model):
         self.graduation_expected = graduation_expected
         self.credit_fall = credit_fall
         self.credit_spring = credit_spring
-        self.request201408 = request201408
-        self.request201501 = request201501
+        self.request_fall = request_fall
+        self.request_spring = request_spring
         
     def __repr__(self):
         return '<Student {0}>'.format(self.student_uid)
