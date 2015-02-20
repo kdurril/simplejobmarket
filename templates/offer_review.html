@@ -1,5 +1,17 @@
 {% extends "base.html" %}
 {% block body %}
+
+<form action="{{ url_for('offers') }}" method=post class=add-entry>
+{{ form.csrf_token }}    
+<div>{{ form.offer_id.label }}: {{ form.offer_id() }}</div>
+<div>{{ form.offermade.label }}: {{ form.offermade() }}</div>
+<div>{{ form.offer_date.label }}: {{ form.offer_date() }}</div>
+<div>{{ form.response.label }}: {{ form.response() }}</div>
+<div>{{ form.response_date.label }}: {{ form.response_date() }}</div>
+<div>{{ form.available.label }}: {{ form.available() }}</div>
+<input type=submit value=send>
+</form>
+
 <table class=offer>
     <tr>
         <th>Offer ID</th>

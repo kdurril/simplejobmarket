@@ -392,13 +392,13 @@ class ApplicationView(MethodView):
         "delete application record"
         pass
 
-    def get(self):
+    def get(self, offer_id=None):
         "review application record"
         form = ApplicationForm()
         #if user is owner, decorate to allow put and delete
-        if user_id is None:
+        if offer_id is None:
             # return a list of users
-            pass
+            return render_template('position_review.html', position_list=offer, form=form)
         else:
             # expose a single user
             pass
@@ -432,16 +432,23 @@ class OfferView(MethodView):
         "delete offer"
         pass
 
-    def get(self, offer_id):
+    def get(self, offer_id=None):
         "review offer"
+        offer = OfferModel()
+        offer = offer.query.all()
+        form = SupervisorForm()
         
         #if user is owner, decorate to allow put and delete
-        if offer_id is owner:
+        #if offer_id is owner:
             # return a list of users
-            pass
+        #    pass
         #if user is applicant offered position, allow view of its offers
-        elif offer_id is applicant:
-            pass
-        else:
+        #elif offer_id is applicant:
+            
+        #    return render_template('offer_review.html', offer_list=offer, form=form)
+        if offer_id == None:
             # expose a single user
-            pass
+            return render_template('offer_review.html', offer_list=offer, form=form)
+
+        else:
+            redirect(url_for('position_view'))
