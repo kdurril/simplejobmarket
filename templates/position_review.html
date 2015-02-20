@@ -2,6 +2,7 @@
 {% block body %}
 
 <form action="{{url_for('positions')}}" method=post class=add-entry>
+{{ form.csrf_token }}    
 <div>{{ form.supervisor_id.label }}: {{ form.supervisor_id() }}</div>
 <div>{{ form.title.label }}: {{ form.title() }}</div>
 <div>{{ form.work_group.label }}: {{ form.work_group() }}</div>
