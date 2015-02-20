@@ -15,6 +15,8 @@
     </tr>
     
     <form action="{{ url_for('student_view') }}" method=post class=add-entry>
+        {{ form.csrf_token }}
+        <div>{{ form.student_uid.label }}: {{ form.student_uid() }}</div>
         <div>{{ form.name_last.label }}: {{ form.name_last() }}</div>
         <div>{{ form.name_first.label }}: {{ form.name_first() }}</div>
         <div>{{ form.email.label }}: {{ form.email() }}</div>
@@ -31,21 +33,18 @@
        <input type=submit value=send>
        </form>
       </table>
-    
-  {% if session.logged_in %}
-  {% endif %}
+
 {% for entry in student_list %}
     <tr>
-        <td>entry.nameFirst</td>
-        <td>entry.nameLast</td>
-        <td>entry.email</td>
-        <td>entry.phone</td>
-        <td>entry.major</td>
-        <td>entry.programCode</td>
-        <td>entry.semBegin</td>
+        <td>{{ entry.name_last }}</td>
+        <td>{{ entry.name_first }} </td>
+        <td>{{ entry.email }}</td>
+        <td>{{ entry.phone }}</td>
+
     <tr>
-{% else %}
-    <li><em>No records</em>
 {% endfor %}
+
+    
+ 
 </table>
 {% endblock %}

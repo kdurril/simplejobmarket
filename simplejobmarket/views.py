@@ -23,8 +23,10 @@ from simplejobmarket.forms import StudentForm,\
 
 from simplejobmarket.models import db
 
+db.sessionmaker
 
-app.secret_key = os.environ.get('SECRET') or 'hard to guess string'
+
+app.secret_key = 'hard to guess string' #os.environ.get('SECRET')
 
 @app.route('/')
 def hello_world():
@@ -58,8 +60,8 @@ class StudentTest(MethodView):
         if student_id == None:
             if form.validate_on_submit():
                 form.populate_obj(student)
-                db.add(student)
-                db.commit()
+                db.session.add(student)
+                db.session.commit()
                 return redirect('student_test')
         else:
             if form.validate_on_submit():
@@ -78,7 +80,7 @@ class StudentTest(MethodView):
                 student_by_id.creditSpring = form.creditSpring.data 
                 student_by_id.request201408 = form.request201408.data
                 student_by_id.request201501 = form.request201501.data
-                db.commit()
+                db.session.commit()
                 return redirect('student_test')
 
         return redirect('/')
@@ -90,7 +92,7 @@ class StudentTest(MethodView):
         if form.validate_on_submit():
             form.populate_obj(student)
             db.update(student_by_id)
-            db.commit()
+            db.session.commit()
             return redirect('student_test')
         return redirect('/')
         
@@ -100,7 +102,7 @@ class StudentTest(MethodView):
         student = StudentModel()
         student_by_id = student.query.get(student_id)
         db.delete(student_by_id)
-        db.commit()
+        db.session.commit()
         return redirect('student_test')
         
     def get(self, student_id=None):
@@ -135,6 +137,8 @@ class StudentView(MethodView):
         "create new student record, http://flask.pocoo.org/snippets/63/ for easy WTforms redirect"
         student = StudentModel()
         form = StudentForm()
+        student_update = student.query.all()
+
         if form.validate_on_submit():
             form.populate_obj(student)
             '''student = StudentModel(
@@ -153,12 +157,12 @@ class StudentView(MethodView):
             form.request201408.data,
             form.request201501.data
                 )'''
-            db.add(student)
-            db.commit()
+            db.session.add(student)
+            db.session.commit()
             return redirect('/')
             
             
-        return render_template('student_review.html', student_list=student, form=form)
+        return render_template('student_review.html', student_list=student_update, form=form)
 
     def put(self, student_id):
         "edit student record"
@@ -182,7 +186,7 @@ class StudentView(MethodView):
         student_update.request201408=form.request201408.data
         student_update.request201501=form.request201501.data
 
-        db.commit()
+        db.session.commit()
 
         if form.validate_on_submit():
             
@@ -200,7 +204,7 @@ class StudentView(MethodView):
             student_update.request201408=form.request201408.data
             student_update.request201501=form.request201501.data
 
-            db.commit()
+            db.session.commit()
             return redirect('/')
         return redirect('/')
         #return render_template('student_update.html', student_id=student_id, student_list=current_update, form=form)
@@ -273,17 +277,17 @@ class SupervisorView(MethodView):
         form = SupervisorForm()
         if form.validate():
             form.populate_obj(supervisor)
-           '''supervisor(
-           10,
-           form.nameLast.data,
-           form.nameFirst.data,
-           form.phone.data,
-           form.email.data,
-           form.room.data,
-           form.center.data
-           )'''
-           db.add(supervisor)
-           db.commit()
+            '''supervisor(
+            10,
+            form.nameLast.data,
+            form.nameFirst.data,
+            form.phone.data,
+            form.email.data,
+            form.room.data,
+            form.center.data
+            )'''
+            db.session.add(supervisor)
+            db.session.commit()
         return redirect('/')
         
 
@@ -333,7 +337,7 @@ class PositionView(MethodView):
             form.supervisor_id.data
             )'''
             return position
-            db.add(position)
+            db.session.add(position)
             bd_session.commit()
         
 
@@ -374,8 +378,8 @@ class ApplicationView(MethodView):
             form.position_id.data
             )'''
             return application
-            db.add(application)
-            db.commit()
+            db.session.add(application)
+            db.session.commit()
 
 
     def put(self, position_id):
@@ -416,7 +420,7 @@ class OfferView(MethodView):
             offers.available = form.available.data'''
             return offers
             db.app(offers)
-            db.commit()
+            db.session.commit()
 
     def put(self, offer_id):
         "edit offer"

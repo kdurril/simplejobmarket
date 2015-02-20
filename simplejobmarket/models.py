@@ -6,7 +6,7 @@ from simplejobmarket import app
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 
-app.config['SQLALCHEMY_DATABASE_URI']='postgres://postgres:password@localhost/postgres'
+app.config['SQLALCHEMY_DATABASE_URI']='postgres://postgres:4054756UMD@localhost/postgres'
 db = SQLAlchemy(app)
 '''
 class RoleModel(db.Model):
