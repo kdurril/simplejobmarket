@@ -33,18 +33,14 @@
        <input type=submit value=send>
        </form>
       </table>
-
+<table>
 {% for entry in student_list %}
     <tr>
         <td>{{ entry.name_last }}</td>
         <td>{{ entry.name_first }} </td>
         <td>{{ entry.email }}</td>
         <td>{{ entry.phone }}</td>
-
     <tr>
 {% endfor %}
-
-    
- 
 </table>
 {% endblock %}
