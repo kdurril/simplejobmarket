@@ -24,7 +24,7 @@ from simplejobmarket.forms import StudentForm,\
 from simplejobmarket.models import db
 
 
-app.secret_key = ''
+app.secret_key = '90#20*1@0oO*21'
 
 @app.route('/')
 def hello_world():
@@ -272,7 +272,8 @@ class SupervisorView(MethodView):
         supervisor = SupervisorModel()
         form = SupervisorForm()
         if form.validate():
-           supervisor(
+            form.populate_obj(supervisor)
+           '''supervisor(
            10,
            form.nameLast.data,
            form.nameFirst.data,
@@ -280,7 +281,7 @@ class SupervisorView(MethodView):
            form.email.data,
            form.room.data,
            form.center.data
-           )
+           )'''
            db.add(supervisor)
            db.commit()
         return redirect('/')
@@ -313,7 +314,8 @@ class PositionView(MethodView):
         position = PostionModel()
         form = PositionForm()
         if form.validate():
-            position(
+            form.populate_obj(position)
+            '''position(
             form.position_id.data,
             form.title.data,
             form.workGroup.data,
@@ -329,7 +331,7 @@ class PositionView(MethodView):
             form.dateClosed.data,
             form.available.data,
             form.supervisor_id.data
-            )
+            )'''
             return position
             db.add(position)
             bd_session.commit()
@@ -366,10 +368,11 @@ class ApplicationView(MethodView):
         applications = PositionAppModel()
         form = ApplicationForm(request.form)
         if form.validate():
-            applications(form.app_id.data,
+            form.populate_obj(applications)
+            '''applications(form.app_id.data,
             form.student_id.data,
             form.position_id.data
-            )
+            )'''
             return application
             db.add(application)
             db.commit()
@@ -403,14 +406,17 @@ class OfferView(MethodView):
         offers = OfferModel()
         form = OfferForm(request.form)
         if form.validate():
-            offers.offer_id = form.offer_id.data
+            form.populate_obj(offers)
+            '''offers.offer_id = form.offer_id.data
             offers.app_id = form.app_id.data
             offers.offerMade = form.offerMade.data 
             offers.offer_date = form.offer_date.data 
             offers.response = form.response.data
             offers.response_date = form.response_date.data
-            offers.available = form.available.data
-        pass
+            offers.available = form.available.data'''
+            return offers
+            db.app(offers)
+            db.commit()
 
     def put(self, offer_id):
         "edit offer"

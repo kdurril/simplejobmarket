@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block body %}
+<table class=offer>
+    <tr>
+        <th>Offer ID</th>
+        <th>Application ID</th>
+        <th>Offer Made</th>
+        <th>Offer Date</th>
+        <th>Response</th>
+        <th>Response Date</th>
+        <th>Available</th>
+    </tr>
+    
+{% for entry in offer_list %}
+    <tr>
+        <td>entry.offer_id</td>
+        <td>entry.app_id</td>
+        <td>entry.offerMade</td>
+        <td>entry.offer_date</td>
+        <td>entry.response</td>
+        <td>entry.response_date</td>
+        <td>entry.avaiable</td>
+    <tr>
+{% endfor %}
+</table>
+{% endblock %}

@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+#-*- coding: utf-8 -*-
+
 from simplejobmarket import app
 from simplejobmarket.views import StudentView, SupervisorView, PositionView, ApplicationView, OfferView 
 
