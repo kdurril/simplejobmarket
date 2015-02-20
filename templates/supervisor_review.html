@@ -1,5 +1,17 @@
 {% extends "base.html" %}
 {% block body %}
+
+<form action= "{{url_for('supervisors')}}" method=post class=add-entry>
+    {{ form.csrf_token }}
+    <div>{{ form.supervisor_id.label }}: {{ form.supervisor_id() }}</div>
+    <div>{{ form.name_last.label }}: {{ form.name_last() }}</div>
+    <div>{{ form.name_first.label }}: {{ form.name_first() }}</div>
+    <div>{{ form.email.label }}: {{ form.email() }}</div>
+    <div>{{ form.room.label }}: {{ form.room() }}</div>
+    <div>{{ form.center.label }}: {{ form.center() }}</div>
+    <input type=submit value=send>
+</form>
+
 <table class=supervisor>
     <tr>
         <th>First Name</th>
@@ -10,15 +22,6 @@
         <th>Center</th>
     </tr>
     
-{% for entry in supervisor_list %}
-    <tr>
-        <td>entry.nameFirst</td>
-        <td>entry.nameLast</td>
-        <td>entry.email</td>
-        <td>entry.phone</td>
-        <td>entry.room</td>
-        <td>entry.center</td>
-    <tr>
-{% endfor %}
+
 </table>
 {% endblock %}
