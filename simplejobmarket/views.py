@@ -24,7 +24,7 @@ from simplejobmarket.forms import StudentForm,\
 from simplejobmarket.models import db
 
 
-app.secret_key = '90#20*1@0oO*21'
+app.secret_key = os.environ.get('SECRET') or 'hard to guess string'
 
 @app.route('/')
 def hello_world():
