@@ -1,5 +1,24 @@
 {% extends "base.html" %}
 {% block body %}
+
+<form action="{{url_for('positions')}}" method=post class=add-entry>
+<div>{{ form.supervisor_id.label }}: {{ form.supervisor_id() }}</div>
+<div>{{ form.title.label }}: {{ form.title() }}</div>
+<div>{{ form.work_group.label }}: {{ form.work_group() }}</div>
+<div>{{ form.position_type.label }}: {{ form.position_type() }}</div>
+<div>{{ form.course.label }}: {{ form.course() }}</div>
+<div>{{ form.program_min.label }}: {{ form.program_min() }}</div>
+<div>{{ form.program_std.label }}: {{ form.program_std() }}</div>
+<div>{{ form.position_overview.label }}: {{ form.position_overview() }}</div>
+<div>{{ form.primary_duties.label }}: {{ form.primary_duties() }}</div>
+<div>{{ form.necessary_skill.label }}: {{ form.necessary_skill() }}</div>
+<div>{{ form.preferred_skill.label }}: {{ form.preferred_skill() }}</div>
+<div>{{ form.date_open.label }}: {{ form.date_open() }}</div>
+<div>{{ form.date_closed.label }}: {{ form.date_closed() }}</div>
+<div>{{ form.available.label }}: {{ form.available() }}</div>
+<input type=submit value=send>
+</form>
+
 <table class=position>
     <tr>
         <th>Postion ID</th>

@@ -349,13 +349,15 @@ class PositionView(MethodView):
         "delete position record"
         pass
 
-    def get(self):
+    def get(self, position_id=None):
         "review position record"
+        position = PositionModel()
+        position = position.query.all()
         form = PositionForm()
         #if user is owner, decorate to allow put and delete
-        if user_id is None:
+        if position_id is None:
             # return a list of users
-            pass
+            return render_template('position_review.html', position_list=position, form=form)
         else:
             # expose a single user
             pass
