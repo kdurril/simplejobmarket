@@ -208,19 +208,19 @@ class OfferModel(db.Model):
     offer_id = db.Column(db.Integer, primary_key=True)
     app_id = db.Column(db.Integer, 
         db.ForeignKey('jobmarket.positionapps.app_id'))
-    offermade = db.Column(db.String(120))
+    offer_made = db.Column(db.String(120))
     offer_date = db.Column(db.Date)
     response = db.Column(db.String(120))
     response_date = db.Column(db.Date)
     available = db.Column(db.String(120))
     
     def __init__(self, offer_id=offer_id, app_id=None,
-                offermade=None, offer_date=None,
+                offer_made=None, offer_date=None,
                 response=None, response_date=None,
                 available=None):
         self.offer_id = offer_id
         self.app_id = app_id
-        self.offermade = offermade
+        self.offer_made = offermade
         self.offer_date = offer_date
         self.response = response
         self.response_date = response_date
