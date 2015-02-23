@@ -8,9 +8,9 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 app.config['SQLALCHEMY_DATABASE_URI']='postgres://postgres:4054756UMD@localhost/postgres'
 db = SQLAlchemy(app)
-'''
+
 class RoleModel(db.Model):
-    __table__ = 'roles'
+    __tablename__ = 'roles'
     __table_args__ ={"schema":"jobmarket"}
 
     role_id = db.Column(db.Integer, primary_key=True)
@@ -54,7 +54,6 @@ class UserModel(db.Model):
     def verify_password(self,password):
         return check_password_hash(self.password_hash,password)
 
-'''
 class StudentModel(db.Model):
     __tablename__ = 'students'
     __table_args__ = {"schema":"jobmarket"}

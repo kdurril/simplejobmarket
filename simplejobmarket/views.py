@@ -407,7 +407,7 @@ class ApplicationView(MethodView):
 #app.add_url_rule('/application/', view_func=ApplicationView.as_view('application'))
 
 class OfferView(MethodView):
-    def post(self, application_id):
+    def post(self, app_id):
         "create new offer"
         offers = OfferModel()
         form = OfferForm(request.form)
@@ -424,15 +424,15 @@ class OfferView(MethodView):
             db.app(offers)
             db.session.commit()
 
-    def put(self, offer_id):
+    def put(self, app_id):
         "edit offer"
         pass
 
-    def delete(self, offer_id):
+    def delete(self, app_id):
         "delete offer"
         pass
 
-    def get(self, offer_id=None):
+    def get(self, app_id=None):
         "review offer"
         offer = OfferModel()
         offer = offer.query.all()
@@ -446,7 +446,7 @@ class OfferView(MethodView):
         #elif offer_id is applicant:
             
         #    return render_template('offer_review.html', offer_list=offer, form=form)
-        if offer_id == None:
+        if app_id == None:
             # expose a single user
             return render_template('offer_review.html', offer_list=offer, form=form)
 
