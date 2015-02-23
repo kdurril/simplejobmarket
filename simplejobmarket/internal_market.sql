@@ -12,6 +12,9 @@ role_id Serial PRIMARY KEY,
 name TEXT NOT NULL
 );
 
+INSERT INTO jobmarket.roles (name) VALUES 
+('student'), ('supervisor'), ('admin'); 
+
 CREATE TABLE jobmarket.users(
 user_id TEXT PRIMARY KEY,
 username TEXT NOT NULL UNIQUE,
