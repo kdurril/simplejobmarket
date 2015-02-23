@@ -203,6 +203,7 @@ class PositionAppModel(db.Model):
 
 
 class OfferModel(db.Model):
+    'the offer is tied to the application as a one-to-one'
     __tablename__ = 'offers'
     __table_args__ = {"schema":"jobmarket"}
     offer_id = db.Column(db.Integer, primary_key=True)
@@ -214,7 +215,7 @@ class OfferModel(db.Model):
     response_date = db.Column(db.Date)
     available = db.Column(db.String(120))
     
-    def __init__(self, offer_id=None, app_id=None,
+    def __init__(self, offer_id=offer_id, app_id=None,
                 offermade=None, offer_date=None,
                 response=None, response_date=None,
                 available=None):
