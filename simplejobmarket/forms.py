@@ -97,8 +97,8 @@ class ApplicationForm(Form):
 class OfferForm(Form):
     offer_id = HiddenField()
     app_id = HiddenField()
-    offermade = RadioField('Offer', choices=[('', ''), ('Yes', 'Yes'), ('No', 'No')])
+    offer_made = RadioField('Offer', choices=[('Yes', 'Yes'), ('No', 'No')])
     offer_date = DateField('Open Date')
-    response = RadioField('Response', choices=[('', ''), ('Yes', 'Yes'), ('No', 'No')])
+    response = RadioField('Response', choices=[('Yes', 'Yes'), ('No', 'No')])
     response_date = HiddenField()
     available = DateField('Date Available')

@@ -436,7 +436,7 @@ class OfferView(MethodView):
         "review offer"
         offer = OfferModel()
         offer = offer.query.all()
-        form = SupervisorForm()
+        form = OfferForm()
         
         #if user is owner, decorate to allow put and delete
         #if offer_id is owner:
