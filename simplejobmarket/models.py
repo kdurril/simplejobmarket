@@ -220,7 +220,7 @@ class OfferModel(db.Model):
                 available=None):
         self.offer_id = offer_id
         self.app_id = app_id
-        self.offer_made = offermade
+        self.offer_made = offer_made
         self.offer_date = offer_date
         self.response = response
         self.response_date = response_date
