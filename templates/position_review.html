@@ -20,6 +20,17 @@
 <input type=submit value=send>
 </form>
 
+{{% if position_id != None %}}
+<form action="{{url_for('applications')}}" method=post class=add-entry>
+    {{form.csrf_token}}
+    <div>{{ form.student_uid.label }}: {{ form.student_uid() }}</div>
+    <div>{{ form.position_id.label }}: {{ form.position_id() }}</div>
+    
+</form>
+
+
+{{% endif %}}
+
 <table class=position>
     <tr>
         <th>Postion ID</th>
