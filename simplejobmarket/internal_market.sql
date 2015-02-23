@@ -79,6 +79,7 @@ CONSTRAINT CHK_student_position UNIQUE (position_id, student_uid)
 );
 
 CREATE TABLE jobmarket.offers(
+offer_id INTEGER,
 app_id INTEGER,
 offer_made Text, 
 offer_date timestamp default current_date, 
