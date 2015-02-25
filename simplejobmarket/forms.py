@@ -18,7 +18,7 @@ from flask_wtf import Form
 from wtforms import StringField, TextField, TextAreaField, BooleanField,\
                     SelectField, DateField, IntegerField, HiddenField,\
                     RadioField, PasswordField
-from wtforms.validators import DataRequired, Length, Required
+from wtforms.validators import DataRequired, Length, Required, Email
 
 #remove models?
 #from internaljobmarket.models import StudentModel,\
@@ -39,7 +39,7 @@ class StudentForm(Form):
     name_last = TextField('Last Name', validators=[Length(min=1, max=100)], default="Smith")
     name_first = TextField('First Name', validators=[Length(min=1, max=100)])
     student_uid = TextField('Student UID', validators=[Length(9)])
-    email = TextField('Email Address', validators=[Length(min=6, max=35)])
+    email = TextField('Email Address', validators=[Required(), Email()])
     phone = TextField('Phone', validators=[Length(min=1, max=25)])
     major = TextField('Specialization', validators=[Length(min=1, max=25)])
     program_code = TextField('Program Code', validators=[Length(min=1, max=25)])
@@ -54,7 +54,7 @@ class SupervisorForm(Form):
     name_last = TextField('Last Name', validators=[Length(min=2, max=25)])
     name_first = TextField('First Name', validators=[Length(min=1, max=25)])
     supervisor_id = TextField('Supervisor UID', validators=[Length(min=1, max=25)])
-    email = TextField('Email Address', validators=[Length(min=6, max=35)])
+    email = TextField('Email Address', validators=[Required(), Email()])
     room = TextField('Room')
     center = TextField('Center')
     
