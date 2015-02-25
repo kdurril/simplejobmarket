@@ -16,7 +16,8 @@ http://wtforms.simplecodes.com/
 
 from flask_wtf import Form
 from wtforms import StringField, TextField, TextAreaField, BooleanField,\
-                    SelectField, DateField, IntegerField, HiddenField, RadioField
+                    SelectField, DateField, IntegerField, HiddenField,\
+                    RadioField, PasswordField
 from wtforms.validators import DataRequired, Length, Required
 
 #remove models?
@@ -28,6 +29,11 @@ from wtforms.validators import DataRequired, Length, Required
 #    example_name = TextField('Name', validators=[DataRequired()])
 #    example_description = TextAreaField('Description', validators=[DataRequired()])
 
+class UserForm(Form):
+    user_id = HiddenField('User ID')
+    username = TextField('User Name', validators=[Length(min=2, max=128)])
+    password = PasswordField('Password', validators=[Required()])
+    role_id = HiddenField('Role ID', default="3")
 
 class StudentForm(Form):
     name_last = TextField('Last Name', validators=[Length(min=1, max=100)], default="Smith")

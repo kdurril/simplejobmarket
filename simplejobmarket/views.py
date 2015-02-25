@@ -9,13 +9,15 @@ from flask import render_template, redirect, url_for
 
 from flask.views import MethodView
 
-from simplejobmarket.models import StudentModel,\
+from simplejobmarket.models import  UserModel,\
+                                    StudentModel,\
                                     SupervisorModel,\
                                     PositionModel,\
                                     PositionAppModel,\
                                     OfferModel
 
-from simplejobmarket.forms import StudentForm,\
+from simplejobmarket.forms import   UserForm,\
+                                    StudentForm,\
                                     SupervisorForm,\
                                     PositionForm,\
                                     ApplicationForm,\
@@ -39,7 +41,6 @@ def student():
     student = StudentModel()
     student = student.query.all()
     form = StudentForm()
-
     
     return render_template('student_review.html', student_list=student, form=form)
 
@@ -52,6 +53,24 @@ def student_by_id(student_id):
     form = StudentForm(obj=student)
                         
     return render_template('student_update.html', student_id=student_id, student_list=[current_student], form=form)
+
+
+class AuthView(MethodView):
+    'This takes UserModel, UserForms'
+    def post(self):
+        user = UserModel()
+        form = AuthForm()
+        if form.validate_on_submit():
+            #USE Authentication HERE
+            form.populate_obj(user)
+            return redirect(url_for('directory_entries'))
+
+        return render_template('auth.html')
+
+    def get(self):
+        user = UserModel()
+        form = UserForm(obj=user)
+        return render_template('auth.html', form=form)
 
 class StudentTest(MethodView):
     def post(self, student_id=None):

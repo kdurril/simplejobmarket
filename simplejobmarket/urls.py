@@ -2,12 +2,17 @@
 #-*- coding: utf-8 -*-
 
 from simplejobmarket import app
-from simplejobmarket.views import StudentView, SupervisorView, PositionView, ApplicationView, OfferView 
+from simplejobmarket.views import AuthView, StudentView, SupervisorView,\
+                                  PositionView, ApplicationView, OfferView 
+#Authorization
+auth_view = AuthView.as_view('auth')
+app.add_url_rule('/auth/', view_func=auth_view, methods=['GET','POST'])
 
+#Student
 student_view = StudentView.as_view('student_view')
 app.add_url_rule('/students/',\
 	view_func=student_view,\
-	methods=['GET',])
+	methods=['GET','POST'])
 app.add_url_rule('/students/',\
 	view_func=student_view,\
 	methods=['POST'])
@@ -15,11 +20,7 @@ app.add_url_rule('/students/<int:student_id>',\
 	view_func=student_view,\
 	methods=['GET','PUT', 'DELETE'])
 
-
-#app.add_url_rule('/students/<int:student_id>/delete',\
-#	view_func=student_view,\
-#	methods=['DELETE'])
-
+#Supervisor
 supervisor_view = SupervisorView.as_view('supervisors')
 app.add_url_rule('/supervisors/',\
 	view_func=supervisor_view,\
@@ -33,7 +34,7 @@ app.add_url_rule('/supervisors/<int:supervisor_id>',\
 	methods=['GET', 'PUT', 'DELETE'])
     #view_func=SupervisorView.as_view('supervisors')
 
-#Move to urls
+#Positions
 position_view = PositionView.as_view('positions')
 app.add_url_rule('/positions/',\
 	view_func=position_view,\
