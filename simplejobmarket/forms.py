@@ -20,15 +20,6 @@ from wtforms import StringField, TextField, TextAreaField, BooleanField,\
                     RadioField, PasswordField
 from wtforms.validators import DataRequired, Length, Required, Email
 
-#remove models?
-#from internaljobmarket.models import StudentModel,\
-#                                SupervisorModel, PositionModel,\
-#                                ApplicationModel, OfferModel
-
-#class ClassicExampleForm(Form):
-#    example_name = TextField('Name', validators=[DataRequired()])
-#    example_description = TextAreaField('Description', validators=[DataRequired()])
-
 class UserForm(Form):
     user_id = HiddenField('User ID')
     username = TextField('User Name', validators=[Length(min=2, max=128)])

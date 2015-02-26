@@ -54,6 +54,17 @@ def student_by_id(student_id):
                         
     return render_template('student_update.html', student_id=student_id, student_list=[current_student], form=form)
 
+def register():
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        user = UserModel(username=form.username.data,
+                         password=form.password.data)
+        db.session.add(user)
+        flash('User added, you can login')
+        return redirect(url_for('login'))
+    return render_template('register.html', form=form)
+
+app.add_url_rule('/register', view_func=register,methods=['GET','POST'])
 
 class AuthView(MethodView):
     'This takes UserModel, UserForms'
