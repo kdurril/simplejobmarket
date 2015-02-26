@@ -16,18 +16,18 @@ INSERT INTO jobmarket.roles (name) VALUES
 ('student'), ('supervisor'), ('admin'); 
 
 CREATE TABLE jobmarket.users(
-user_id TEXT PRIMARY KEY,
-username TEXT NOT NULL UNIQUE,
-passwordhash TEXT,
+
+username TEXT NOT NULL Primary Key,
+password_hash TEXT,
 role_id INTEGER,
-CONSTRAINT FKrole FOREIGN KEY (role_id) REFERENCES jobmarket.roles,
+CONSTRAINT FKrole FOREIGN KEY (role_id) REFERENCES jobmarket.roles
 );
 
 CREATE TABLE jobmarket.students(
 student_uid TEXT PRIMARY KEY,
 name_last TEXT NOT NULL,
 name_first TEXT NOT NULL,
-email TEXT NOT NULL,
+email TEXT NOT NULL UNIQUE,
 phone TEXT,
 major TEXT,
 program_code TEXT,
@@ -44,7 +44,7 @@ supervisor_id TEXT PRIMARY KEY,
 name_last TEXT NOT NULL,
 name_first TEXT NOT NULL,
 phone TEXT,
-email TEXT NOT NULL,
+email TEXT NOT NULL UNIQUE,
 room TEXT,
 center TEXT
 );

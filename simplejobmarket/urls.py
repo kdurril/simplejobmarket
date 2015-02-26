@@ -3,10 +3,13 @@
 
 from simplejobmarket import app
 from simplejobmarket.views import AuthView, StudentView, SupervisorView,\
-                                  PositionView, ApplicationView, OfferView 
+                                  PositionView, ApplicationView, OfferView,\
+                                  register 
 #Authorization
 auth_view = AuthView.as_view('auth')
 app.add_url_rule('/auth/', view_func=auth_view, methods=['GET','POST'])
+
+app.add_url_rule('/register/', view_func=register, methods=['GET','POST'])
 
 #Student
 student_view = StudentView.as_view('student_view')

@@ -5,6 +5,8 @@
 from simplejobmarket import app
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask.ext.login import UserMixin
+from . import login_manager
 import os
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://postgres:4054756UMD@localhost/postgres'
@@ -19,6 +21,7 @@ class RoleModel(db.Model):
 
     role_id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(24), unique=True)
+    users = db.relationship("UserModel", backref=db.backref('roles'))
 
     def __init__(self, role_id=None, name=None):
         self.role_id=role_id
@@ -27,20 +30,17 @@ class RoleModel(db.Model):
     def __repr__(self):
         return 'Role Name {0}'.format(self.name)
 
-class UserModel(db.Model):
+class UserModel(UserMixin, db.Model):
     __tablename__ = 'users'
     __table_args__ = {"schema":"jobmarket"}
 
-    user_id = db.Column(db.String(120), primary_key=True)
-    username = db.Column(db.String(120), unique=True, index=True)
-    passwordhash = db.Column(db.String(128))
-    role_id = db.Column(db.Integer,db.ForeignKey('roles.role_id'))
+    username = db.Column(db.String(120), primary_key=True)
+    password_hash = db.Column(db.String(128))
+    role_id = db.Column(db.Integer,db.ForeignKey('jobmarket.roles.role_id'))
 
-    def __init__(self, user_id=None, username=None, 
-                       passwordhash=None, role_id=None):
-        self.user_id = user_id
+    def __init__(self, username=None, password_hash=None, role_id=None):
         self.username = username
-        self.passwordhash = passwordhash
+        self.password_hash = password_hash
         self.role_id = role_id
 
     def __repr__(self):
@@ -232,3 +232,9 @@ class OfferModel(db.Model):
         
     def __repr__(self):
         return '<Application {0}>'.format(self.app_id)
+
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(user_id)

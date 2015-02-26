@@ -21,10 +21,16 @@ from wtforms import StringField, TextField, TextAreaField, BooleanField,\
 from wtforms.validators import DataRequired, Length, Required, Email
 
 class UserForm(Form):
-    user_id = HiddenField('User ID')
-    username = TextField('User Name', validators=[Length(min=2, max=128)])
+    
+    username = TextField('Directory ID', validators=[Length(min=2, max=128)])
     password = PasswordField('Password', validators=[Required()])
-    role_id = HiddenField('Role ID', default="3")
+    role_id = HiddenField('Role ID', default="1")
+
+class RegistrationForm(UserForm):
+    role_id = IntegerField('Role', default=1)
+    #role_id = SelectField('Role ID',\
+    #                      choices=[(1, 1),\
+    #                               (2, 2)])
 
 class StudentForm(Form):
     name_last = TextField('Last Name', validators=[Length(min=1, max=100)], default="Smith")

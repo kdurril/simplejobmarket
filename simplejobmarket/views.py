@@ -5,7 +5,7 @@
 
 from simplejobmarket import app
 
-from flask import render_template, redirect, url_for
+from flask import render_template, redirect, url_for, flash
 
 from flask.views import MethodView
 
@@ -17,6 +17,7 @@ from simplejobmarket.models import  UserModel,\
                                     OfferModel
 
 from simplejobmarket.forms import   UserForm,\
+                                    RegistrationForm,\
                                     StudentForm,\
                                     SupervisorForm,\
                                     PositionForm,\
@@ -25,8 +26,9 @@ from simplejobmarket.forms import   UserForm,\
 
 from simplejobmarket.models import db
 
-db.sessionmaker
+from flask.ext.login import login_user, login_required, current_user
 
+#db.sessionmaker
 
 app.secret_key = 'hard to guess string' #os.environ.get('SECRET')
 
@@ -54,17 +56,31 @@ def student_by_id(student_id):
                         
     return render_template('student_update.html', student_id=student_id, student_list=[current_student], form=form)
 
+#@app.route('/register/', methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():
-        user = UserModel(username=form.username.data,
-                         password=form.password.data)
+        user = UserModel(username=form.username.data)
+        user.password = form.password.data
+        user.role_id = form.role_id.data
         db.session.add(user)
+        db.session.commit()
         flash('User added, you can login')
-        return redirect(url_for('login'))
+        return redirect(url_for('student_view'))
     return render_template('register.html', form=form)
 
-app.add_url_rule('/register', view_func=register,methods=['GET','POST'])
+#app.add_url_rule('/register/', view_func=register, methods=['GET','POST'])
+
+def login():
+    form = UserForm()
+    if form.validate_on_submit():
+        user = UserModel.query.filter_by(username=form.email.data).first()
+        if user is not None and user.verify_password(form.password.data):
+            login_user(user, form.remember_me.data)
+            return redirect(request.args.get('next') or url_for('/'))
+        flash('Invalid username or password.')
+    return render_template('login.html', form=form)
+
 
 class AuthView(MethodView):
     'This takes UserModel, UserForms'
