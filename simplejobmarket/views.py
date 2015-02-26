@@ -36,27 +36,6 @@ app.secret_key = 'hard to guess string' #os.environ.get('SECRET')
 def hello_world():
     return 'Hello World!'
 
-@app.route('/bros/')
-def student():
-    "review student record"
-
-    student = StudentModel()
-    student = student.query.all()
-    form = StudentForm()
-    
-    return render_template('student_review.html', student_list=student, form=form)
-
-@app.route('/bros/<int:student_id>', methods=['GET','PUT'])
-def student_by_id(student_id):
-    student = StudentModel()
-    #need an object and a list containing object for template
-    student = student.query.get(student_id)
-    current_student = student
-    form = StudentForm(obj=student)
-                        
-    return render_template('student_update.html', student_id=student_id, student_list=[current_student], form=form)
-
-#@app.route('/register/', methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():
@@ -81,7 +60,6 @@ def login():
         flash('Invalid username or password.')
     return render_template('login.html', form=form)
 
-
 class AuthView(MethodView):
     'This takes UserModel, UserForms'
     def post(self):
@@ -90,7 +68,7 @@ class AuthView(MethodView):
         if form.validate_on_submit():
             #USE Authentication HERE
             form.populate_obj(user)
-            return redirect(url_for('directory_entries'))
+            return redirect(url_for('auth.html'))
 
         return render_template('auth.html')
 
@@ -98,84 +76,6 @@ class AuthView(MethodView):
         user = UserModel()
         form = UserForm(obj=user)
         return render_template('auth.html', form=form)
-
-class StudentTest(MethodView):
-    def post(self, student_id=None):
-        student = StudentModel()
-        form = StudentForm()
-        if student_id == None:
-            if form.validate_on_submit():
-                form.populate_obj(student)
-                db.session.add(student)
-                db.session.commit()
-                return redirect('student_test')
-        else:
-            if form.validate_on_submit():
-                student_by_id = student.query.get(student_id) 
-                
-                student_by_id.studentUid = form.studentUid.data
-                student_by_id.nameLast = form.nameLast.data
-                student_by_id.nameFirst = form.nameFirst.data
-                student_by_id.email = form.email.data
-                student_by_id.phone = form.phone.data
-                student_by_id.major = form.major.data
-                student_by_id.programCode = form.programCode.data
-                student_by_id.semBegin = form.semBegin.data
-                student_by_id.graduationExpected = form.graduationExpected.data
-                student_by_id.creditFall = form.creditFall.data
-                student_by_id.creditSpring = form.creditSpring.data 
-                student_by_id.request201408 = form.request201408.data
-                student_by_id.request201501 = form.request201501.data
-                db.session.commit()
-                return redirect('student_test')
-
-        return redirect('/')
-
-    def put(self, student_id):
-        student = StudentModel()
-        student_by_id = student.query.get(student_id)
-        form = StudentForm()
-        if form.validate_on_submit():
-            form.populate_obj(student)
-            db.update(student_by_id)
-            db.session.commit()
-            return redirect('student_test')
-        return redirect('/')
-        
-
-    def delete(self, student_id):
-
-        student = StudentModel()
-        student_by_id = student.query.get(student_id)
-        db.delete(student_by_id)
-        db.session.commit()
-        return redirect('student_test')
-        
-    def get(self, student_id=None):
-
-        if student_id == None:
-            student = StudentModel()
-            student_list = student.query.all()
-            form = StudentForm()
-            return render_template('student_test.html', student_list=student_list, form=form)
-        else:
-            student = StudentModel()
-            student_list = student.query.get(student_id)
-            form = StudentForm(obj=student_list)
-            return render_template('student_test_update.html', student_id=student_id, student_list=[student_list], form=form)
-
-student_test = StudentTest.as_view('student_test')
-student_put = StudentTest.as_view('student_put')
-
-app.add_url_rule('/student_test/',\
-    view_func=student_test,\
-    methods=['GET','POST'])
-
-app.add_url_rule('/student_test/<int:student_id>',\
-    view_func=student_put,\
-    methods=['GET', 'PUT', 'DELETE'])
-
-
 
 class StudentView(MethodView):
 
@@ -260,7 +160,8 @@ class StudentView(MethodView):
         "delete student record"
         student = StudentModel()
         student_delete = student.query.get(student_uid)
-        db.delete(student_delete)
+        db.session.delete(student_delete)
+        db.commit()
 
         return redirect(url_for('student_view'))
 
@@ -344,7 +245,9 @@ class SupervisorView(MethodView):
     def delete(self, supervisor_id):
         "delete supervisor record"
         supervisor = SupervisorModel()
-        supervisor = supervisor.delete(supervisor_id)
+        supervisor_delete = supervisor.delete(supervisor_id)
+        db.session.delete(supervisor_delete)
+        db.session.commit()
         pass
 
     def get(self):
@@ -384,7 +287,7 @@ class PositionView(MethodView):
             )'''
             return position
             db.session.add(position)
-            bd_session.commit()
+            db.session.commit()
         
 
     def put(self):
@@ -467,7 +370,7 @@ class OfferView(MethodView):
             offers.response_date = form.response_date.data
             offers.available = form.available.data'''
             return offers
-            db.app(offers)
+            db.session.add(offers)
             db.session.commit()
 
     def put(self, app_id):
