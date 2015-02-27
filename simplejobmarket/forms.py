@@ -17,14 +17,15 @@ http://wtforms.simplecodes.com/
 from flask_wtf import Form
 from wtforms import StringField, TextField, TextAreaField, BooleanField,\
                     SelectField, DateField, IntegerField, HiddenField,\
-                    RadioField, PasswordField
+                    RadioField, PasswordField, SubmitField
 from wtforms.validators import DataRequired, Length, Required, Email
 
 class UserForm(Form):
-    
     username = TextField('Directory ID', validators=[Length(min=2, max=128)])
     password = PasswordField('Password', validators=[Required()])
     role_id = HiddenField('Role ID', default="1")
+    remember = BooleanField('Stay logged in')
+    submit = SubmitField('Submit')
 
 class RegistrationForm(UserForm):
     role_id = IntegerField('Role', default=1)

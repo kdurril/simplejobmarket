@@ -44,8 +44,7 @@ class UserModel(UserMixin, db.Model):
         self.role_id = role_id
 
     def __repr__(self):
-        return '<Username {0}>, <User ID {1}>'\
-        .format(self.username, self.user_id)
+        return self.username
 
     @property
     def password(self):
@@ -101,6 +100,10 @@ class StudentModel(db.Model):
         
     def __repr__(self):
         return '<Student {0}>'.format(self.student_uid)
+
+@login_manager.user_loader
+def load_user(username):
+    return models.UserModel.query.get(username)
 
 
 class SupervisorModel(db.Model):

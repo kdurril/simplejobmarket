@@ -4,10 +4,12 @@
 from simplejobmarket import app
 from simplejobmarket.views import AuthView, StudentView, SupervisorView,\
                                   PositionView, ApplicationView, OfferView,\
-                                  register 
+                                  register, login 
 #Authorization
 auth_view = AuthView.as_view('auth')
 app.add_url_rule('/auth/', view_func=auth_view, methods=['GET','POST'])
+
+app.add_url_rule('/login/', view_func=login, methods=['GET','POST'])
 
 app.add_url_rule('/register/', view_func=register, methods=['GET','POST'])
 
@@ -35,7 +37,6 @@ app.add_url_rule('/supervisors/',\
 app.add_url_rule('/supervisors/<int:supervisor_id>',\
 	view_func=supervisor_view,\
 	methods=['GET', 'PUT', 'DELETE'])
-    #view_func=SupervisorView.as_view('supervisors')
 
 #Positions
 position_view = PositionView.as_view('positions')

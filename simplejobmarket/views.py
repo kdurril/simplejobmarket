@@ -26,7 +26,7 @@ from simplejobmarket.forms import   UserForm,\
 
 from simplejobmarket.models import db
 
-from flask.ext.login import login_user, login_required, current_user
+from flask.ext.login import login_user, logout_user, login_required, current_user
 
 #db.sessionmaker
 
@@ -50,15 +50,18 @@ def register():
 
 #app.add_url_rule('/register/', view_func=register, methods=['GET','POST'])
 
+
 def login():
     form = UserForm()
     if form.validate_on_submit():
-        user = UserModel.query.filter_by(username=form.email.data).first()
+        user = UserModel.query.filter_by(username=form.username.data).first()
         if user is not None and user.verify_password(form.password.data):
-            login_user(user, form.remember_me.data)
-            return redirect(request.args.get('next') or url_for('/'))
+            login_user(user)
+            return redirect(url_for('student_view'))
         flash('Invalid username or password.')
     return render_template('login.html', form=form)
+
+#app.add_url_rule('/login', view_func=login, methods=['GET','POST'])
 
 class AuthView(MethodView):
     'This takes UserModel, UserForms'
