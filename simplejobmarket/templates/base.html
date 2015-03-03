@@ -2,7 +2,7 @@
 <html>
 
 <head>
-<title>Student Sextant: basic program navigation</title>
+<title>Simple Job Market: School of Public Policy Internal Positions</title>
 <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
 <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
@@ -10,6 +10,13 @@
 
 <body>
  {% block body %}
+ <h1>Simple Job Market: School of Public Policy Internal Positions</h1>
+ {% if current_user.is_athenticated() %}
+ <div><a href="/logout">login</a></div>
+ {% else %}
+ <div><a href="/login">login</a></div>
+ {% endif %}
+
 
   
   {% endblock %}
