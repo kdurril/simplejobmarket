@@ -10,7 +10,8 @@ class Config:
 
 class DevelopmentConfig(Config):
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = os.environ['POSTGRESKEY']
+    SQLALCHEMY_DATABASE_URI = 'postgres://postgres:4054756UMD@localhost/postgres'
+    #os.environ['POSTGRESKEY']
     #MAIL_SERVER
     #MAIL_PORT = 587
     #MAIL_USE_TLS = True
@@ -26,6 +27,6 @@ class ProductionConfig(Config):
 
 config = {'development':DevelopmentConfig,
           'testing':TestingConfig,
-          'production':Production,
+          'production':ProductionConfig,
           'default':DevelopmentConfig
           }

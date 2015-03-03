@@ -7,13 +7,14 @@ from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask.ext.login import UserMixin
 from . import login_manager
+from . import db
 import os
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://postgres:4054756UMD@localhost/postgres'
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://postgres:4054756UMD@localhost/postgres'
 #os.environ.get('POSTGRESKEY')
 
 
-db = SQLAlchemy(app)
+#db = SQLAlchemy(app)
 
 class RoleModel(db.Model):
     __tablename__ = 'roles'
@@ -37,11 +38,14 @@ class UserModel(UserMixin, db.Model):
     username = db.Column(db.String(120), primary_key=True)
     password_hash = db.Column(db.String(128))
     role_id = db.Column(db.Integer,db.ForeignKey('jobmarket.roles.role_id'))
+    id = username
 
-    def __init__(self, username=None, password_hash=None, role_id=None):
+
+    def __init__(self, username=None, password_hash=None, role_id=None, id=id):
         self.username = username
         self.password_hash = password_hash
         self.role_id = role_id
+        self.id = username
 
     def __repr__(self):
         return self.username
@@ -102,8 +106,8 @@ class StudentModel(db.Model):
         return '<Student {0}>'.format(self.student_uid)
 
 @login_manager.user_loader
-def load_user(username):
-    return models.UserModel.query.get(username)
+def load_user(id):
+    return UserModel.query.get(id)
 
 
 class SupervisorModel(db.Model):
@@ -235,9 +239,3 @@ class OfferModel(db.Model):
         
     def __repr__(self):
         return '<Application {0}>'.format(self.app_id)
-
-
-
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(user_id)
