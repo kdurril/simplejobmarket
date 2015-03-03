@@ -4,12 +4,14 @@
 from simplejobmarket import app
 from simplejobmarket.views import AuthView, StudentView, SupervisorView,\
                                   PositionView, ApplicationView, OfferView,\
-                                  register, login 
+                                  register, login, logout 
 #Authorization
 auth_view = AuthView.as_view('auth')
 app.add_url_rule('/auth/', view_func=auth_view, methods=['GET','POST'])
 
 app.add_url_rule('/login/', view_func=login, methods=['GET','POST'])
+
+app.add_url_rule('/logout/', view_func=logout, methods=['GET'])
 
 app.add_url_rule('/register/', view_func=register, methods=['GET','POST'])
 

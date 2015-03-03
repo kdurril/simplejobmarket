@@ -61,6 +61,10 @@ def login():
         flash('Invalid username or password.')
     return render_template('login.html', form=form)
 
+def logout():
+    logout_user()
+    return redirect(url_for('student_view'))
+
 #app.add_url_rule('/login', view_func=login, methods=['GET','POST'])
 
 class AuthView(MethodView):
