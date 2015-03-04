@@ -9,13 +9,16 @@
 </head>
 
 <body>
+	<h1>Simple Job Market: School of Public Policy Internal Positions</h1>
+	 {% if current_user.is_authenticated() %}
+     <div><a href="/logout">logout</a></div>
+     {% else %}
+     <div><a href="/login">login</a></div>
+     {% endif %}
+
  {% block body %}
- <h1>Simple Job Market: School of Public Policy Internal Positions</h1>
- {% if current_user.is_athenticated() %}
- <div><a href="/logout">login</a></div>
- {% else %}
- <div><a href="/login">login</a></div>
- {% endif %}
+ 
+
 
 
   
