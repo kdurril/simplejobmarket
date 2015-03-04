@@ -42,6 +42,7 @@ def register():
         user = UserModel(username=form.username.data)
         user.password = form.password.data
         user.role_id = form.role_id.data
+        #user.id = None
         db.session.add(user)
         db.session.commit()
         flash('User added, you can login')
@@ -49,7 +50,6 @@ def register():
     return render_template('register.html', form=form)
 
 #app.add_url_rule('/register/', view_func=register, methods=['GET','POST'])
-
 
 def login():
     form = UserForm()
@@ -110,6 +110,7 @@ class StudentView(MethodView):
             form.request201408.data,
             form.request201501.data
                 )'''
+            student.username = current_user.username
             db.session.add(student)
             db.session.commit()
             return redirect('/')
@@ -121,7 +122,7 @@ class StudentView(MethodView):
         "edit student record"
         "http://wtforms.simplecodes.com/docs/0.6.1/forms.html#wtforms.form.Form.populate_obj"
         student = StudentModel()
-        student_update = student.query.get(student_id)
+        student_update = student.query.get(username)
         current_student = [student_update]
         form = StudentForm()
         
@@ -138,6 +139,7 @@ class StudentView(MethodView):
         student_update.credit_spring=form.credit_spring.data 
         student_update.request201408=form.request201408.data
         student_update.request201501=form.request201501.data
+
 
         db.session.commit()
 
@@ -188,41 +190,10 @@ class StudentView(MethodView):
             student = student.query.get(student_uid)
             current_student = student
             form = StudentForm(obj=student)
-            #student.populate_obj(form)
-            #form.studentUid.data = student.studentUid 
-            #form.nameLast.data = student.nameLast
-            #form.nameFirst.data = student.nameFirst
-            #form.email.data = student.email
-            #form.phone.data = student.phone 
-            #form.major.data = student.major 
-            #form.programCode.data = student.programCode 
-            #form.semBegin.data = student.semBegin
-            #form.graduationExpected.data = student.graduationExpected
-            #form.creditFall.data = student.creditFall
-            #form.creditSpring.data = student.creditSpring
-            #form.request201408.data = student.request201408
-            #form.request201501.data = student.request201501
+
                 
             return render_template('student_update.html', student_id=student_id, 
                 student_list=[current_student], form=form)
-
-
-        #return render_template('student_reveiw.html', students=students)
-        
-
-        #def show_user(username):
-        #    student = StudentView.query.filter_by(student=username).first_or_404()
-        #    return render_template('show_user.html', user=user)
-        
-        
-#Move to urls
-#app.add_url_rule('/students/', view_func=StudentView.as_view('students'),\
-#    template_name='student_review.html', methods=['GET',])
-#app.add_url_rule('/students/add', view_func=StudentView.as_view('students'),\
-#    template_name='student_review.html', methods=['POST',])
-#app.add_url_rule('/students/<int: student_id>', view_func=StudentView.as_view('students'),\
-#    template_name='student_review.html', methods=['GET', 'PUT', 'DELETE'])
-
 
 class SupervisorView(MethodView):
     def post(self):
@@ -240,9 +211,10 @@ class SupervisorView(MethodView):
             form.room.data,
             form.center.data
             )'''
+            supervisor.username = current_user.username
             db.session.add(supervisor)
             db.session.commit()
-        return redirect('/')
+            return redirect('/')
         
 
     def put(self, supervisor_id):
@@ -292,9 +264,11 @@ class PositionView(MethodView):
             form.available.data,
             form.supervisor_id.data
             )'''
-            return position
+            supervisor.username = current_user.username
             db.session.add(position)
             db.session.commit()
+            return position
+            
         
 
     def put(self):
@@ -335,6 +309,7 @@ class ApplicationView(MethodView):
             form.student_id.data,
             form.position_id.data
             )'''
+            applications.username = current_user
             return application
             db.session.add(application)
             db.session.commit()

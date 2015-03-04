@@ -35,18 +35,20 @@ class UserModel(UserMixin, db.Model):
     __tablename__ = 'users'
     __table_args__ = {"schema":"jobmarket"}
 
-    username = db.Column(db.String(120), primary_key=True)
+    username = db.Column(db.String(120), unique=True)
     password_hash = db.Column(db.String(128))
     role_id = db.Column(db.Integer,db.ForeignKey('jobmarket.roles.role_id'))
-    id = username
+    id = db.Column(db.Integer(), primary_key=True)
+    student = db.relationship("StudentModel", backref=('users'))
+    supervisor = db.relationship("SupervisorModel", backref=('users'))
 
 
-    def __init__(self, username=None, password_hash=None, role_id=None, id=id):
+    def __init__(self, username=None, password_hash=None, role_id=None):
         self.username = username
         self.password_hash = password_hash
         self.role_id = role_id
-        self.id = username
-
+        
+        
     def __repr__(self):
         return self.username
 
@@ -65,6 +67,8 @@ class StudentModel(db.Model):
     __tablename__ = 'students'
     __table_args__ = {"schema":"jobmarket"}
     
+    username = db.Column(db.String(120),\
+                          db.ForeignKey('jobmarket.users.username'))
     student_uid = db.Column(db.String(120), primary_key=True)
     name_last = db.Column(db.String(120))
     name_first  = db.Column(db.String(120))
@@ -78,16 +82,17 @@ class StudentModel(db.Model):
     credit_spring =  db.Column(db.Integer)
     request_fall = db.Column(db.String(120))
     request_spring = db.Column(db.String(120))
-    position_apps = db.relationship("PositionAppModel", 
+    position_apps = db.relationship("PositionAppModel",\
         backref=db.backref('students'), lazy='dynamic')
     
-    def __init__(self, student_uid=None, name_last=None,
+    def __init__(self, username=username, student_uid=None, name_last=None,
                 name_first=None, email=None,
                 phone=None, major=None,
                 program_code=None, sem_begin=None,
                 graduation_expected=None, credit_fall=None,
                 credit_spring=None, request_fall=None,
                 request_spring=None):
+        self.username
         self.student_uid =  student_uid
         self.name_last = name_last
         self.name_first = name_first
@@ -103,7 +108,7 @@ class StudentModel(db.Model):
         self.request_spring = request_spring
         
     def __repr__(self):
-        return '<Student {0}>'.format(self.student_uid)
+        return '<{0}>'.format(self.username)
 
 @login_manager.user_loader
 def load_user(id):
@@ -113,6 +118,8 @@ def load_user(id):
 class SupervisorModel(db.Model):
     __tablename__ = 'supervisors'
     __table_args__ = {"schema":"jobmarket"}
+    username = db.Column(db.String(120),\
+                          db.ForeignKey('jobmarket.users.username'))
     supervisor_id = db.Column(db.Integer, primary_key=True)
     name_last = db.Column(db.String(120))
     name_first = db.Column(db.String(120))
@@ -124,10 +131,11 @@ class SupervisorModel(db.Model):
                             backref=db.backref('supervisors'),
                             lazy='dynamic')
 
-    def __init__(self, supervisor_id=None, 
+    def __init__(self, username=username, supervisor_id=None, 
                 name_last=None, name_first=None,
                 phone=None, email=None,
                 room=None, center=None):
+        self.username = username
         self.supervisor_id = supervisor_id
         self.name_last = name_last
         self.name_frst = name_first
@@ -137,7 +145,7 @@ class SupervisorModel(db.Model):
         self.center = center
         
     def __repr__(self):
-        return '<Supservisor {0}>'.format(self.supervisor_id)
+        return '<{0}>'.format(self.username)
 
 class PositionModel(db.Model):
     __tablename__ = 'positions'
@@ -156,8 +164,8 @@ class PositionModel(db.Model):
     date_open = db.Column(db.String(120))
     date_closed = db.Column(db.String(120))
     available = db.Column(db.String(120))
-    supervisor_id = db.Column(db.Integer, 
-        db.ForeignKey('jobmarket.supervisors.supervisor_id'), nullable=False)
+    username = db.Column(db.Integer, 
+        db.ForeignKey('jobmarket.supervisors.username'), nullable=False)
     position_apps = db.relationship("PositionAppModel", 
         backref=db.backref('positions'))
     
@@ -195,18 +203,18 @@ class PositionAppModel(db.Model):
     position_id = db.Column(db.Integer, 
         db.ForeignKey('jobmarket.positions.position_id'))
     student_uid = db.Column(db.String(120), 
-        db.ForeignKey('jobmarket.students.student_uid'))
-    db.UniqueConstraint('position_id', 'student_uid', name='unique_app')
+        db.ForeignKey('jobmarket.students.username'))
+    db.UniqueConstraint('position_id', 'username', name='unique_app')
     offers = db.relationship('OfferModel', backref=db.backref('positionapps'),
                                 lazy='dynamic')
     
     def __init__(self, app_id=None,
                 position_id=None,
-                student_uid=None):
+                username=None):
 
         self.app_id = app_id
         self.position_id = position_id
-        self.student_uid = student_uid
+        self.username = username
 
     def __repr__(self):
         return '<Application {0}>'.format(self.app_id)

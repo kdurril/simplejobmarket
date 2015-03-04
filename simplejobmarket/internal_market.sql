@@ -1,6 +1,8 @@
 ﻿-- Internal Job Market
 -- postgresql version
 CREATE Schema If Not Exists jobmarket;
+DROP TABLE IF EXISTS jobmarket.users CASCADE;
+DROP TABLE IF EXISTS jobmarket.roles CASCADE;
 DROP TABLE IF EXISTS jobmarket.students CASCADE;
 DROP TABLE IF EXISTS jobmarket.supervisors CASCADE;
 DROP TABLE IF EXISTS jobmarket.positions CASCADE;
@@ -17,6 +19,7 @@ INSERT INTO jobmarket.roles (name) VALUES
 
 CREATE TABLE jobmarket.users(
 
+id Serial,
 username TEXT NOT NULL Primary Key,
 password_hash TEXT,
 role_id INTEGER,
@@ -24,6 +27,7 @@ CONSTRAINT FKrole FOREIGN KEY (role_id) REFERENCES jobmarket.roles
 );
 
 CREATE TABLE jobmarket.students(
+username Text,
 student_uid TEXT PRIMARY KEY,
 name_last TEXT NOT NULL,
 name_first TEXT NOT NULL,
@@ -36,17 +40,20 @@ graduation_expected TEXT,
 credit_fall INTEGER NOT NULL,
 credit_spring INTEGER NOT NULL,
 request_fall BOOLEAN NOT NULL,
-request_spring BOOLEAN NOT NULL
+request_spring BOOLEAN NOT NULL,
+CONSTRAINT FKuser FOREIGN KEY (username) REFERENCES jobmarket.users
 );
 
 CREATE TABLE jobmarket.supervisors(
+username Text,
 supervisor_id TEXT PRIMARY KEY,
 name_last TEXT NOT NULL,
 name_first TEXT NOT NULL,
 phone TEXT,
 email TEXT NOT NULL UNIQUE,
 room TEXT,
-center TEXT
+center TEXT,
+CONSTRAINT FKuser FOREIGN KEY (username) REFERENCES jobmarket.users
 );
 
 CREATE TABLE jobmarket.positions(
@@ -64,18 +71,18 @@ preferred_skill TEXT,
 date_open Date,
 date_closed Date,
 available INTEGER NOT NULL,
-supervisor_id TEXT,
-CONSTRAINT FKsupervisor FOREIGN KEY (supervisor_id) REFERENCES jobmarket.supervisors,
+username TEXT,
+CONSTRAINT FKsupervisor FOREIGN KEY (username) REFERENCES jobmarket.users,
 CHECK (positions.available >= 0)
 );
 
 CREATE TABLE jobmarket.positionApps(
 app_id SERIAL PRIMARY KEY,
 position_id INTEGER, 
-student_uid TEXT,
+username TEXT,
 CONSTRAINT FKpostion FOREIGN KEY (position_id) REFERENCES jobmarket.positions,
-CONSTRAINT FKstudent FOREIGN KEY (student_uid) REFERENCES jobmarket.students,
-CONSTRAINT CHK_student_position UNIQUE (position_id, student_uid)
+CONSTRAINT FKstudent FOREIGN KEY (username) REFERENCES jobmarket.users,
+CONSTRAINT CHK_student_position UNIQUE (position_id, username)
 );
 
 CREATE TABLE jobmarket.offers(

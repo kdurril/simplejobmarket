@@ -3,7 +3,6 @@
 
 <form action="{{url_for('positions')}}" method=post class=add-entry>
 {{ form.csrf_token }}    
-<div>{{ form.supervisor_id.label }}: {{ form.supervisor_id() }}</div>
 <div>{{ form.title.label }}: {{ form.title() }}</div>
 <div>{{ form.work_group.label }}: {{ form.work_group() }}</div>
 <div>{{ form.position_type.label }}: {{ form.position_type() }}</div>
@@ -20,16 +19,15 @@
 <input type=submit value=send>
 </form>
 
-{{% if position_id != None %}}
+{% if position_id != None %}
 <form action="{{url_for('applications')}}" method=post class=add-entry>
     {{form.csrf_token}}
-    <div>{{ form.student_uid.label }}: {{ form.student_uid() }}</div>
     <div>{{ form.position_id.label }}: {{ form.position_id() }}</div>
     
 </form>
 
 
-{{% endif %}}
+{% endif %}
 
 <table class=position>
     <tr>
@@ -66,7 +64,7 @@
         <td>entry.dateOpen</td>
         <td>entry.dateClosed</td>
         <td>entry.available</td>
-        <td>entry.supervisor_id</td>
+        <td>entry.username</td>
     <tr>
 {% endfor %}
 </table>

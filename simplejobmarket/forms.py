@@ -24,6 +24,7 @@ class UserForm(Form):
     username = TextField('Directory ID', validators=[Length(min=2, max=128)])
     password = PasswordField('Password', validators=[Required()])
     role_id = HiddenField('Role ID', default="1")
+    #id = HiddenField('ID')
     remember = BooleanField('Stay logged in')
     submit = SubmitField('Submit')
 
@@ -34,6 +35,7 @@ class RegistrationForm(UserForm):
     #                               (2, 2)])
 
 class StudentForm(Form):
+    username = HiddenField('Username')
     name_last = TextField('Last Name', validators=[Length(min=1, max=100)], default="Smith")
     name_first = TextField('First Name', validators=[Length(min=1, max=100)])
     student_uid = TextField('Student UID', validators=[Length(9)])
@@ -47,16 +49,21 @@ class StudentForm(Form):
     credit_spring = TextField('Spring Credit', validators=[Length(min=1, max=25)])
     request_fall = BooleanField('Fall Request', validators=[Required()])
     request_spring = BooleanField('Spring Request')
+    submit = SubmitField('Submit')
     
 class SupervisorForm(Form):
+    username = HiddenField('Username')
     name_last = TextField('Last Name', validators=[Length(min=2, max=25)])
     name_first = TextField('First Name', validators=[Length(min=1, max=25)])
     supervisor_id = TextField('Supervisor UID', validators=[Length(min=1, max=25)])
     email = TextField('Email Address', validators=[Required(), Email()])
     room = TextField('Room')
     center = TextField('Center')
+    submit = SubmitField('Submit')
     
 class PositionForm(Form):
+    position_id = HiddenField('Position ID')
+    username = HiddenField('Username')
     title = TextField('Title', validators=[Length(min=2, max=255)])
     work_group = TextField('Center or Work Group')
     position_type = SelectField('Position Type',\
@@ -91,12 +98,13 @@ class PositionForm(Form):
     date_open = DateField('Open Date')
     date_closed = DateField('Close Date')
     available = IntegerField('Available Positions', validators=[Required()])
-    supervisor_id = TextField('Supervisor ID', validators=[Required()])
+    submit = SubmitField('Submit')
 
 class ApplicationForm(Form):
     app_id = HiddenField()
-    student_uid = TextField('Student Directory ID')
+    username = HiddenField('Username')
     position_id = HiddenField('Position ID')
+    submit = SubmitField('Submit')
 
 class OfferForm(Form):
     offer_id = HiddenField()
@@ -106,3 +114,8 @@ class OfferForm(Form):
     response = RadioField('Response', choices=[('Yes', 'Yes'), ('No', 'No')])
     response_date = HiddenField()
     available = DateField('Date Available')
+    submit = SubmitField('Submit')
+
+class OfferFormResponse(Form):
+    'This is the version for accepting or rejecting the offer'
+    pass
