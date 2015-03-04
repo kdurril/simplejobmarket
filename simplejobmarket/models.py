@@ -163,8 +163,8 @@ class PositionModel(db.Model):
     preferred_skill = db.Column(db.String(120))
     date_open = db.Column(db.String(120))
     date_closed = db.Column(db.String(120))
-    available = db.Column(db.String(120))
-    username = db.Column(db.Integer, 
+    available = db.Column(db.Integer)
+    username = db.Column(db.String(120), 
         db.ForeignKey('jobmarket.supervisors.username'), nullable=False)
     position_apps = db.relationship("PositionAppModel", 
         backref=db.backref('positions'))
@@ -175,7 +175,7 @@ class PositionModel(db.Model):
                 position_overview=None, primary_duties=None,
                 necessary_skill=None, preferred_skill=None,
                 date_open=None, date_closed=None,
-                available=None, supervisor_id=None):
+                available=None, username=username):
         self.position_id = position_id
         self.title = title
         self.work_group = work_group
@@ -190,7 +190,7 @@ class PositionModel(db.Model):
         self.date_open = date_open
         self.date_closed = date_closed
         self.available = available
-        self.supervisor_id = supervisor_id
+        self.username = username
             
     def __repr__(self):
         return '<Position {0}>'.format(self.position_id)

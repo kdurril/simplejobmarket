@@ -62,7 +62,7 @@ class SupervisorForm(Form):
     submit = SubmitField('Submit')
     
 class PositionForm(Form):
-    position_id = HiddenField('Position ID')
+    
     username = HiddenField('Username')
     title = TextField('Title', validators=[Length(min=2, max=255)])
     work_group = TextField('Center or Work Group')
@@ -97,7 +97,7 @@ class PositionForm(Form):
     preferred_skill = TextAreaField('Additional Skills', validators=[Length(min=2, max=255)])
     date_open = DateField('Open Date')
     date_closed = DateField('Close Date')
-    available = IntegerField('Available Positions', validators=[Required()])
+    available = IntegerField('Available', default=1)
     submit = SubmitField('Submit')
 
 class ApplicationForm(Form):

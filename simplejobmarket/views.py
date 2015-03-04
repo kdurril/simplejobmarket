@@ -214,7 +214,7 @@ class SupervisorView(MethodView):
             supervisor.username = current_user.username
             db.session.add(supervisor)
             db.session.commit()
-            return redirect('/')
+            return redirect(url_for('supervisor_view'))
         
 
     def put(self, supervisor_id):
@@ -243,7 +243,7 @@ class PositionView(MethodView):
 
     def post(self):
         "create position record"
-        position = PostionModel()
+        position = PositionModel()
         form = PositionForm()
         if form.validate():
             form.populate_obj(position)
@@ -264,10 +264,13 @@ class PositionView(MethodView):
             form.available.data,
             form.supervisor_id.data
             )'''
-            supervisor.username = current_user.username
+            position.username = current_user.username
+            
             db.session.add(position)
             db.session.commit()
-            return position
+            return redirect(url_for('student_view'))
+
+        return redirect('/')
             
         
 

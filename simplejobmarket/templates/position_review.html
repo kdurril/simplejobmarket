@@ -1,8 +1,9 @@
 {% extends "base.html" %}
 {% block body %}
 
+{% if current_user.role_id == 2 %}
 <form action="{{url_for('positions')}}" method=post class=add-entry>
-{{ form.csrf_token }}    
+{{ form.csrf_token }}
 <div>{{ form.title.label }}: {{ form.title() }}</div>
 <div>{{ form.work_group.label }}: {{ form.work_group() }}</div>
 <div>{{ form.position_type.label }}: {{ form.position_type() }}</div>
@@ -16,11 +17,15 @@
 <div>{{ form.date_open.label }}: {{ form.date_open() }}</div>
 <div>{{ form.date_closed.label }}: {{ form.date_closed() }}</div>
 <div>{{ form.available.label }}: {{ form.available() }}</div>
+<div>{{ form.username.label }}: {{ form.username() }}</div>
+<div>{{ form.submit.label }}: {{ form.submit() }}</div>
 <input type=submit value=send>
-</form>
 
-{% if position_id != None %}
-<form action="{{url_for('applications')}}" method=post class=add-entry>
+</form>
+ {% endif %}
+
+{% if current_user.role_id == 1 %}
+<form action="{{url_for('application_view')}}" method=post class=add-entry>
     {{form.csrf_token}}
     <div>{{ form.position_id.label }}: {{ form.position_id() }}</div>
     
