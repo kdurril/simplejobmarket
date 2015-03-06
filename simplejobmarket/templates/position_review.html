@@ -19,20 +19,10 @@
 <div>{{ form.available.label }}: {{ form.available() }}</div>
 <div>{{ form.username.label }}: {{ form.username() }}</div>
 <div>{{ form.submit.label }}: {{ form.submit() }}</div>
-<input type=submit value=send>
+
 
 </form>
  {% endif %}
-
-{% if current_user.role_id == 1 %}
-<form action="{{url_for('application_view')}}" method=post class=add-entry>
-    {{form.csrf_token}}
-    <div>{{ form.position_id.label }}: {{ form.position_id() }}</div>
-    
-</form>
-
-
-{% endif %}
 
 <table class=position>
     <tr>
@@ -55,23 +45,35 @@
     
 {% for entry in position_list %}
     <tr>
-        <td>entry.position_id</td>
-        <td>entry.title</td>
-        <td>entry.workGroup</td>
-        <td>entry.position_type</td>
-        <td>entry.course</td>
-        <td>entry.programMin</td>
-        <td>entry.programStd</td>
-        <td>entry.positionOverview</td>
-        <td>entry.primarySkill</td>
-        <td>entry.necessarySkill</td>
-        <td>entry.preferredSkill</td>
-        <td>entry.dateOpen</td>
-        <td>entry.dateClosed</td>
-        <td>entry.available</td>
-        <td>entry.username</td>
+        <td>{{entry.position_id}}</td>
+        <td>{{entry.title}}</td>
+        <td>{{entry.workGroup}}</td>
+        <td>{{entry.position_type}}</td>
+        <td>{{entry.course}}</td>
+        <td>{{entry.programMin}}</td>
+        <td>{{entry.programStd}}</td>
+        <td>{{entry.positionOverview}}</td>
+        <td>{{entry.primarySkill}}</td>
+        <td>{{entry.necessarySkill}}</td>
+        <td>{{entry.preferredSkill}}</td>
+        <td>{{entry.dateOpen}}</td>
+        <td>{{entry.dateClosed}}</td>
+        <td>{{entry.available}}</td>
+        <td>{{entry.username}}</td>
     <tr>
 {% endfor %}
 </table>
+
+{% if current_user.role_id == 1 %}
+<form action="{{url_for('applications')}}" method=post class=add-entry>
+    {{form.csrf_token}}
+    <div>{{ form.submit.label }}: {{ form.submit() }}</div>
+    
+</form>
+
+
+{% endif %}
+
+
 {% endblock %}
 
