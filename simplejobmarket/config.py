@@ -10,9 +10,10 @@ class Config:
 
 class DevelopmentConfig(Config):
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = 'postgres://postgres:4054756UMD@localhost/postgres'
-    #os.environ['POSTGRESKEY']
-    #MAIL_SERVER
+    SQLALCHEMY_DATABASE_URI = 'postgres://{0}:{1}@localhost/postgres'\
+                              .format(os.environ['USER'], os.environ['POSTGRESKEY'])
+    #os.environ['POSTGRESKEY'] 
+    #MAIL_SERVER 
     #MAIL_PORT = 587
     #MAIL_USE_TLS = True
     #MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
@@ -20,10 +21,12 @@ class DevelopmentConfig(Config):
 
 class TestingConfig(Config):
     TESTING = True
-    SQLALCHEMY_DATABASE_URI = os.environ['POSTGRESKEY']
-
+    SQLALCHEMY_DATABASE_URI = 'postgres://{0}:{1}@localhost/postgres'\
+                              .format(os.environ['USER'], os.environ['POSTGRESKEY'])
+                              
 class ProductionConfig(Config):
-    SQLALCHEMY_DATABASE_URI = os.environ['POSTGRESKEY']
+    SQLALCHEMY_DATABASE_URI = 'postgres://{0}:{1}@localhost/postgres'\
+                              .format(os.environ['USER'], os.environ['POSTGRESKEY'])
 
 config = {'development':DevelopmentConfig,
           'testing':TestingConfig,
