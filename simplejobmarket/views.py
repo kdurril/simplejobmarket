@@ -94,22 +94,6 @@ class StudentView(MethodView):
 
         if form.validate_on_submit():
             form.populate_obj(student)
-            '''student = StudentModel(
-            None,
-            form.studentUid.data,
-            form.nameLast.data,
-            form.nameFirst.data,
-            form.email.data,
-            form.phone.data,
-            form.major.data,
-            form.programCode.data,
-            form.semBegin.data,
-            form.graduationExpected.data,
-            form.creditFall.data,
-            form.creditSpring.data, 
-            form.request201408.data,
-            form.request201501.data
-                )'''
             student.username = current_user.username
             db.session.add(student)
             db.session.commit()
@@ -202,19 +186,10 @@ class SupervisorView(MethodView):
         form = SupervisorForm()
         if form.validate():
             form.populate_obj(supervisor)
-            '''supervisor(
-            10,
-            form.nameLast.data,
-            form.nameFirst.data,
-            form.phone.data,
-            form.email.data,
-            form.room.data,
-            form.center.data
-            )'''
             supervisor.username = current_user.username
             db.session.add(supervisor)
             db.session.commit()
-            return redirect(url_for('supervisor_view'))
+            return redirect(url_for('supervisors'))
         
 
     def put(self, supervisor_id):
@@ -236,8 +211,6 @@ class SupervisorView(MethodView):
         form = SupervisorForm()
         #supervisor can only view his own record
         return render_template('supervisor_review.html', supervisor_list=supervisor, form=form)
-#Move to urls
-#app.add_url_rule('/supervisors/', view_func=SupervisorView.as_view('supervisors'), template_name='supervisor_review.html')
 
 class PositionView(MethodView):
 
