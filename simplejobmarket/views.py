@@ -149,10 +149,10 @@ class StudentView(MethodView):
         #return render_template('student_update.html', student_id=student_id, student_list=current_update, form=form)
 
 
-    def delete(self, student_id):
+    def delete(self, username):
         "delete student record"
         student = StudentModel()
-        student_delete = student.query.get(student_uid)
+        student_delete = student.query.get(username)
         db.session.delete(student_delete)
         db.commit()
 
@@ -258,15 +258,17 @@ class PositionView(MethodView):
     def get(self, position_id=None):
         "review position record"
         position = PositionModel()
-        position = position.query.all()
+        position_all = position.query.all()
         form = PositionForm()
         #if user is owner, decorate to allow put and delete
         if position_id is None:
             # return a list of users
-            return render_template('position_review.html', position_list=position, form=form)
+            return render_template('position_review.html',\
+            position_id=position_id, position_list=position_all, form=form)
         else:
-            # expose a single user
-            pass
+            position_one = position.query.get(position_id)
+            return render_template('position_review.html',\
+            position_id=position_id, position_list=[position_one], form=form)
 
 #Move to urls
 #app.add_url_rule('/positions/', view_func=PositionView.as_view('positions'), template_name='position_review.html')
@@ -275,20 +277,28 @@ class PositionView(MethodView):
 #                 methods=['GET', 'PUT', 'DELETE'])
 
 class ApplicationView(MethodView):
-    def post(self, position_id):
+    def post(self,position_id):
         "create application record"
         applications = PositionAppModel()
-        form = ApplicationForm(request.form)
+        form = ApplicationForm()
+
         if form.validate():
             form.populate_obj(applications)
             '''applications(form.app_id.data,
             form.student_id.data,
             form.position_id.data
             )'''
-            applications.username = current_user
-            return application
-            db.session.add(application)
-            db.session.commit()
+            applications.username = current_user.username
+            applications.position_id = position_id
+            db.session.add(applications)
+            #try:
+            #db.session.commit()
+            #except:
+            #    flash('Your application was not accepted')
+            #    return redirect(url_for('position_view'))
+            flash('Thank you for applying')
+            return redirect(url_for('student_view'))
+            
 
 
     def put(self, position_id):
@@ -305,7 +315,7 @@ class ApplicationView(MethodView):
         #if user is owner, decorate to allow put and delete
         if offer_id is None:
             # return a list of users
-            return render_template('position_review.html', position_list=offer, form=form)
+            return render_template('position_review.html', form=form)
         else:
             # expose a single user
             pass
@@ -317,7 +327,7 @@ class OfferView(MethodView):
     def post(self, app_id):
         "create new offer"
         offers = OfferModel()
-        form = OfferForm(request.form)
+        form = OfferForm()
         if form.validate():
             form.populate_obj(offers)
             '''offers.offer_id = form.offer_id.data

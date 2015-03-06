@@ -101,10 +101,9 @@ class PositionForm(Form):
     submit = SubmitField('Submit')
 
 class ApplicationForm(Form):
-    app_id = HiddenField()
     username = HiddenField('Username')
-    position_id = HiddenField('Position ID')
-    submit = SubmitField('Submit')
+    position_id = HiddenField()
+    submit = SubmitField('Apply')
 
 class OfferForm(Form):
     offer_id = HiddenField()

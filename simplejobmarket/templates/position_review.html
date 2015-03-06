@@ -24,6 +24,26 @@
 </form>
  {% endif %}
 
+{% for entry in position_list %}
+    <ul>
+        <li>{{entry.position_id}}</li>
+        <li>{{entry.title}}</li>
+        <li>{{entry.work_group}}</li>
+        <li>{{entry.position_type}}</li>
+        <li>{{entry.course}}</li>
+        <li>{{entry.program_min}}</li>
+        <li>{{entry.program_std}}</li>
+        <li>{{entry.position_overview}}</li>
+        <li>{{entry.primary_skill}}</li>
+        <li>{{entry.necessary_skill}}</li>
+        <li>{{entry.preferred_skill}}</li>
+        <li>{{entry.date_open}}</li>
+        <li>{{entry.date_closed}}</li>
+        <li>{{entry.available}}</li>
+        <li>{{entry.username}}</li>
+    </ul>
+{% endfor %}
+
 <table class=position>
     <tr>
         <th>Postion ID</th>
@@ -64,8 +84,8 @@
 {% endfor %}
 </table>
 
-{% if current_user.role_id == 1 %}
-<form action="{{url_for('applications')}}" method=post class=add-entry>
+{% if current_user.role_id == 1 and position_id != None %}
+<form action="{{url_for('applications', position_id=position_id)}}" method=post class=add-entry>
     {{form.csrf_token}}
     <div>{{ form.submit.label }}: {{ form.submit() }}</div>
     

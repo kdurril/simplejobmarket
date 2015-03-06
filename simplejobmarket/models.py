@@ -202,7 +202,7 @@ class PositionAppModel(db.Model):
     app_id = db.Column(db.Integer, primary_key=True)
     position_id = db.Column(db.Integer, 
         db.ForeignKey('jobmarket.positions.position_id'))
-    student_uid = db.Column(db.String(120), 
+    username = db.Column(db.String(120), 
         db.ForeignKey('jobmarket.students.username'))
     db.UniqueConstraint('position_id', 'username', name='unique_app')
     offers = db.relationship('OfferModel', backref=db.backref('positionapps'),

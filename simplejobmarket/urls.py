@@ -63,7 +63,10 @@ app.add_url_rule('/positions/<int:position_id>',\
 
 #For review of applications for individual
 application_view = ApplicationView.as_view('applications')
-app.add_url_rule('/applications/', view_func=application_view)
+#app.add_url_rule('/applications/', view_func=application_view)
+app.add_url_rule('/applications/<position_id>',\
+	view_func=application_view,
+	methods=['POST'])
 
 #OFFER
 offer_view = OfferView.as_view('offers')
