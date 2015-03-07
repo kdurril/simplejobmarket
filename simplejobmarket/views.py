@@ -324,7 +324,7 @@ class ApplicationView(MethodView):
 #app.add_url_rule('/application/', view_func=ApplicationView.as_view('application'))
 
 class OfferView(MethodView):
-    def post(self, app_id):
+    def post(self):
         "create new offer"
         offers = OfferModel()
         form = OfferForm()
@@ -337,13 +337,37 @@ class OfferView(MethodView):
             offers.response = form.response.data
             offers.response_date = form.response_date.data
             offers.available = form.available.data'''
-            return offers
             db.session.add(offers)
             db.session.commit()
+            flash('Offer concluded')
+            return offers
+            
 
     def put(self, app_id):
-        "edit offer"
-        pass
+        "response or edit offer"
+        #MOVE THIS TO ANOTHER TABLE
+        offers = OfferModel()
+
+        if current_user.role_id == 1:
+            #Student response
+            form = ResponseForm()
+            if form.validate():
+                form.populate_obj(offers)
+                db.session.add(offers)
+                db.session.commit()
+                flash('Response Sent')
+            pass
+
+        #DON'T ALLOW OFFER REVISION, JUST DELETION
+        #if current_user.role_id == 2:
+        #    #Supervisor Update
+        #    form = OfferForm()
+        #    if form.validate():
+        #        form.populate_obj(offers)
+        #        db.session.add(offers)
+        #        db.session.commit()
+        #        flash('Offer Updated')
+        #    pass
 
     def delete(self, app_id):
         "delete offer"
