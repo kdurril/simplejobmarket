@@ -7,6 +7,7 @@ from simplejobmarket import app
 
 from flask import render_template, redirect, url_for, flash
 
+
 from flask.views import MethodView
 
 from simplejobmarket.models import  UserModel,\
@@ -259,16 +260,24 @@ class PositionView(MethodView):
         "review position record"
         position = PositionModel()
         position_all = position.query.all()
+        applications = PositionAppModel()
+        app_submitted = applications.query.filter_by(username=current_user.username)
+        exclude_app = [str(x.position_id) for x in app_submitted]
+        pagination = position.query.paginate(1,1)
         form = PositionForm()
         #if user is owner, decorate to allow put and delete
         if position_id is None:
             # return a list of users
-            return render_template('position_review.html',\
-            position_id=position_id, position_list=position_all, form=form)
+            pagination = position.query.paginate(1,1)
+            return render_template('position_pages.html',\
+            position_id=position_id, position_list=position_all,\
+            pagination=pagination, form=form)
         else:
             position_one = position.query.get(position_id)
-            return render_template('position_review.html',\
-            position_id=position_id, position_list=[position_one], form=form)
+            return render_template('position_pages.html',\
+                    position_id=position_id, position_list=[position_one],\
+                    pagination=pagination, app_submitted=app_submitted,\
+                    exclude_app=exclude_app, form=form)
 
 #Move to urls
 #app.add_url_rule('/positions/', view_func=PositionView.as_view('positions'), template_name='position_review.html')

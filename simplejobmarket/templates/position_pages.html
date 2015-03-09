@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+{% block body %}
+
+{% if current_user.role_id == 2 %}
+<form action="{{url_for('positions')}}" method=post class=add-entry>
+{{ form.csrf_token }}
+<div>{{ form.title.label }}: {{ form.title() }}</div>
+<div>{{ form.work_group.label }}: {{ form.work_group() }}</div>
+<div>{{ form.position_type.label }}: {{ form.position_type() }}</div>
+<div>{{ form.course.label }}: {{ form.course() }}</div>
+<div>{{ form.program_min.label }}: {{ form.program_min() }}</div>
+<div>{{ form.program_std.label }}: {{ form.program_std() }}</div>
+<div>{{ form.position_overview.label }}: {{ form.position_overview() }}</div>
+<div>{{ form.primary_duties.label }}: {{ form.primary_duties() }}</div>
+<div>{{ form.necessary_skill.label }}: {{ form.necessary_skill() }}</div>
+<div>{{ form.preferred_skill.label }}: {{ form.preferred_skill() }}</div>
+<div>{{ form.date_open.label }}: {{ form.date_open() }}</div>
+<div>{{ form.date_closed.label }}: {{ form.date_closed() }}</div>
+<div>{{ form.available.label }}: {{ form.available() }}</div>
+<div>{{ form.username.label }}: {{ form.username() }}</div>
+<div>{{ form.submit.label }}: {{ form.submit() }}</div>
+
+
+</form>
+ {% endif %}
+
+<div>Pagination</div>
+{% for page in pagination.iter_pages() %}
+  {% if page %}
+  {% if page != pagination.page %}
+   <a href="{{ url_for('positions', position_id=page) }}">{{ page }}</a>
+   {% else %}
+    <strong>{{ page }}</strong>
+    {% endif %}
+    {% else %}
+    <span class=ellipsis>...</span>
+    {% endif %}
+{% endfor %}
+
+<div>Total: {{ pagination.pages }}</div>
+
+
+{% for entry in position_list %}
+    <ul>
+        <li>{{entry.position_id}}</li>
+        <li>{{entry.title}}</li>
+        <li>{{entry.work_group}}</li>
+        <li>{{entry.position_type}}</li>
+        <li>{{entry.course}}</li>
+        <li>{{entry.program_min}}</li>
+        <li>{{entry.program_std}}</li>
+        <li>{{entry.position_overview}}</li>
+        <li>{{entry.primary_skill}}</li>
+        <li>{{entry.necessary_skill}}</li>
+        <li>{{entry.preferred_skill}}</li>
+        <li>{{entry.date_open}}</li>
+        <li>{{entry.date_closed}}</li>
+        <li>{{entry.available}}</li>
+        <li>{{entry.username}}</li>
+    </ul>
+{% endfor %}
+
+<table class=position>
+    <tr>
+        <th>Postion ID</th>
+        <th>Title</th>
+        <th>Work Group</th>
+        <th>Type</th>
+        <th>Course</th>
+        <th>Minimum level</th>
+        <th>Standard level</th>
+        <th>Overview</th>
+        <th>Duties</th>
+        <th>Necessary Skill</th>
+        <th>Additional Skill</th>
+        <th>Opening Date</th>
+        <th>Closing Date</th>
+        <th>Quantity Available</th>
+        <th>Supervisor</td>
+    </tr>
+    
+{% for entry in position_list %}
+    <tr>
+        <td>{{entry.position_id}}</td>
+        <td>{{entry.title}}</td>
+        <td>{{entry.workGroup}}</td>
+        <td>{{entry.position_type}}</td>
+        <td>{{entry.course}}</td>
+        <td>{{entry.programMin}}</td>
+        <td>{{entry.programStd}}</td>
+        <td>{{entry.positionOverview}}</td>
+        <td>{{entry.primarySkill}}</td>
+        <td>{{entry.necessarySkill}}</td>
+        <td>{{entry.preferredSkill}}</td>
+        <td>{{entry.dateOpen}}</td>
+        <td>{{entry.dateClosed}}</td>
+        <td>{{entry.available}}</td>
+        <td>{{entry.username}}</td>
+    <tr>
+{% endfor %}
+</table>
+
+{% if position_id in exclude_app%}
+<p>You have already applied to this position</p>
+{% endif %}
+
+{% if position_id not in exclude_app%}
+{% if current_user.role_id == 1 and position_id != None %}
+
+<form action="{{url_for('applications', position_id=position_id)}}" method=post class=add-entry>
+    {{form.csrf_token}}
+    <div>{{ form.submit() }}</div> 
+</form>
+
+{% endif %}
+{% endif %}
+
+{% endblock %}
+

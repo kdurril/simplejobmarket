@@ -10,12 +10,6 @@ from . import login_manager
 from . import db
 import os
 
-#app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://postgres:4054756UMD@localhost/postgres'
-#os.environ.get('POSTGRESKEY')
-
-
-#db = SQLAlchemy(app)
-
 class RoleModel(db.Model):
     __tablename__ = 'roles'
     __table_args__ ={"schema":"jobmarket"}

@@ -57,7 +57,7 @@ app.add_url_rule('/positions/',\
 	view_func=position_view,\
 	methods=['GET','POST'])
 #this view must be restricted to the positon owner/supervisor
-app.add_url_rule('/positions/<int:position_id>',\
+app.add_url_rule('/positions/<position_id>',\
 	view_func=position_view,\
     methods=['GET', 'PUT', 'DELETE'])
 

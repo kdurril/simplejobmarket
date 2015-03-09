@@ -72,7 +72,8 @@ class PositionForm(Form):
                                         ('RA', 'Research Assistant'),\
                                         ('TA', 'Teaching Assistant')])
     course = SelectField('Course',\
-                            choices=[('PUAF610', 'PUAF610'),\
+                            choices=[ ('', ''),\
+                                    ('PUAF610', 'PUAF610'),\
                                     ('PUAF611', 'PUAF611'),\
                                     ('PUAF620', 'PUAF620'),\
                                     ('PUAF640', 'PUAF640'),\
@@ -91,10 +92,10 @@ class PositionForm(Form):
                                     ('Phd1', 'PhD 1st Year'),\
                                     ('Phd2', 'PhD 2nd Year'),\
                                     ('PhdCadidate', 'PhD Candidate')])
-    position_overview = TextAreaField('Position Overview', validators=[Length(min=2, max=255)])
-    primary_duties = TextAreaField('Primary Duties', validators=[Length(min=2, max=255)])
-    necessary_skill = TextAreaField('Required Skills', validators=[Length(min=2, max=255)])
-    preferred_skill = TextAreaField('Additional Skills', validators=[Length(min=2, max=255)])
+    position_overview = TextAreaField('Position Overview', validators=[Length(min=2, max=1024)])
+    primary_duties = TextAreaField('Primary Duties', validators=[Length(min=2, max=1024)])
+    necessary_skill = TextAreaField('Required Skills', validators=[Length(min=2, max=1024)])
+    preferred_skill = TextAreaField('Additional Skills', validators=[Length(min=0, max=1024)])
     date_open = DateField('Open Date')
     date_closed = DateField('Close Date')
     available = IntegerField('Available', default=1)
