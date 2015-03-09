@@ -5,12 +5,11 @@
 {{ form.csrf_token }}    
 
 <div>{{ form.offer_made.label }}: {{ form.offer_made() }}</div>
-<div>{{ form.offer_date.label }}: {{ form.offer_date() }}</div>
-<div>{{ form.response.label }}: {{ form.response() }}</div>
-<div>{{ form.response_date.label }}: {{ form.response_date() }}</div>
-<div>{{ form.available.label }}: {{ form.available() }}</div>
-<input type=submit value=send>
+<div>{{ form.submit()}}
 </form>
+
+
+
 
 <table class=offer>
     <tr>
@@ -23,7 +22,6 @@
         <th>Available</th>
     </tr>
     
-{% for entry in offer_list %}
     <tr>
         <td>entry.offer_id</td>
         <td>entry.app_id</td>
@@ -33,6 +31,8 @@
         <td>entry.response_date</td>
         <td>entry.avaiable</td>
     <tr>
+{% for entry in offer_list %}
+
 {% endfor %}
 </table>
 {% endblock %}
