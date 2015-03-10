@@ -13,6 +13,7 @@ stud.username, stud.first_name, stud.last_name,
 FROM supe INNER JOIN stud ON supe.position_id = stud.position_id
 
 USE return id for position and username for student to link to position profile, student profile
+USE app id to offer or decline to offer a position
 
 INSERT INTO OFFERS (app_id,offer_made) VALUES (stud.app_id, offer_made)
 

@@ -8,8 +8,30 @@
 <div>{{ form.submit()}}
 </form>
 
+<table class=offer>
+    <tr>
+        <th>app_id</th>
+        <th>supervisor</th>
+        <th>position id</th>
+        <th>position name</th>
+        <th>student username</th>
+        <th>student email</th>
+        <th>student first name</th>
+        <th>student last name</th>
+    </tr>
+    {% for app in app_review_all %}
+    <tr>
+        <td>{{ app.position_apps[0].app_id }}</td>
+        <td>{{ app.username }}</td>
+        <td>{{ app.position_id }}</td>
+        <td>{{ app.title }}</td>
+        <td>{{ app.position_apps[0].students.email }}</td>
+        <td>{{ app.position_apps[0].students.name_last }}</td>
+        <td>{{ app.position_apps[0].students.name_first }}</td>
+    </tr>
 
-
+    {% endfor%}
+</table>
 
 <table class=offer>
     <tr>
@@ -21,7 +43,7 @@
         <th>Response Date</th>
         <th>Available</th>
     </tr>
-    
+{% for entry in offer_list %}    
     <tr>
         <td>entry.offer_id</td>
         <td>entry.app_id</td>
@@ -31,8 +53,6 @@
         <td>entry.response_date</td>
         <td>entry.avaiable</td>
     <tr>
-{% for entry in offer_list %}
-
 {% endfor %}
 </table>
 {% endblock %}

@@ -387,6 +387,14 @@ class OfferView(MethodView):
         offer = OfferModel()
         offer = offer.query.all()
         form = OfferForm()
+        post = PositionModel()
+        app_review = post.query.filter(\
+            PositionModel().username==current_user.username)\
+            .join(PositionAppModel)\
+            .join(StudentModel)
+        app_review_all = app_review.all()
+
+
         
         #if user is owner, decorate to allow put and delete
         #if offer_id is owner:
@@ -398,7 +406,7 @@ class OfferView(MethodView):
         #    return render_template('offer_review.html', offer_list=offer, form=form)
         if app_id == None:
             # expose a single user
-            return render_template('offer_review.html', offer_list=offer, form=form)
+            return render_template('offer_review.html', offer_list=offer, app_review_all=app_review_all, form=form)
 
         else:
             redirect(url_for('position_view'))
