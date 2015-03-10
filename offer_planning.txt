@@ -1,0 +1,22 @@
+SELECT position.position_id, position.title
+FROM position INNER JOIN position.username = supervisor.username
+WHERE supervisor.username = current_user.username
+AS supe
+
+SELECT positionapps.app_id, positionapps.position_id, positionapp.username, 
+student.first_name, student.last_name
+FROM positionapps INNER JOIN students ON positionapps.username = students.username
+AS stud
+
+SELECT stud.app_id, stud.position_id, supe.title,
+stud.username, stud.first_name, stud.last_name,
+FROM supe INNER JOIN stud ON supe.position_id = stud.position_id
+
+USE return id for position and username for student to link to position profile, student profile
+
+INSERT INTO OFFERS (app_id,offer_made) VALUES (stud.app_id, offer_made)
+
+supe = query.join(position, Position.username==Supervisor.username).filter(Supervisor.username==current_user.username)
+stud = query.join(positionapp, PositionApp.username==Student.username)
+offer_by_student = query.(stud.app_id, stud.positoin_id, supe.title, stud.name_last, stud.name_first, stud.username).\
+join(supe, supe.position_id = stud.position_id)
