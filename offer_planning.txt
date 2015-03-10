@@ -20,3 +20,16 @@ supe = query.join(position, Position.username==Supervisor.username).filter(Super
 stud = query.join(positionapp, PositionApp.username==Student.username)
 offer_by_student = query.(stud.app_id, stud.positoin_id, supe.title, stud.name_last, stud.name_first, stud.username).\
 join(supe, supe.position_id = stud.position_id)
+
+--Working Model
+WITH supe AS (
+SELECT positions.position_id, positions.title
+FROM jobmarket.positions INNER JOIN jobmarket.supervisors ON positions.username = supervisors.username
+WHERE supervisors.username = 'naismith'
+), stud AS (SELECT positionapps.app_id, positionapps.position_id, positionapps.username, 
+students.name_first, students.name_last
+FROM jobmarket.positionapps INNER JOIN jobmarket.students ON positionapps.username = students.username
+)
+SELECT stud.app_id, stud.position_id, supe.title,
+stud.username, stud.name_first, stud.name_last
+FROM supe INNER JOIN stud ON supe.position_id = stud.position_id
