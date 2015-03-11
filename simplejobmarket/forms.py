@@ -110,13 +110,19 @@ class OfferForm(Form):
     'Accept or reject applicant by supervisor'
     #offer_id = HiddenField()
     app_id = HiddenField()
-    offer_made = RadioField('Offer', choices=[('Yes', 'Yes'), ('No', 'No')])
+    offer_made = RadioField('Offer', choices=[(1, 'Yes'), (0, 'No')])
     #offer_date = DateField('Open Date') LET THIS BE A AUTO STAMP
     submit = SubmitField('Conclude')
 
+class OfferYes(OfferForm):
+    offer_made = HiddenField(default=1)
+
+class OfferNo(OfferForm):
+    offer_made = HiddenField(default=0)
+
 class ResponseForm(Form):
     'This is the version for accepting or rejecting the offer by student'
-    response = RadioField('Response', choices=[('Yes', 'Yes'), ('No', 'No')])
+    response = RadioField('Response', choices=[(1, 'Yes'), (0, 'No')])
     response_date = HiddenField()
     available = DateField('Date Available')
     submit = SubmitField('Respond')

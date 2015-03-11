@@ -23,7 +23,11 @@ from simplejobmarket.forms import   UserForm,\
                                     SupervisorForm,\
                                     PositionForm,\
                                     ApplicationForm,\
-                                    OfferForm
+                                    OfferForm,\
+                                    OfferYes,\
+                                    OfferNo,\
+                                    ResponseForm
+
 
 from simplejobmarket.models import db
 
@@ -337,19 +341,22 @@ class OfferView(MethodView):
         "create new offer"
         offers = OfferModel()
         form = OfferForm()
-        if form.validate():
-            form.populate_obj(offers)
-            '''offers.offer_id = form.offer_id.data
-            offers.app_id = form.app_id.data
-            offers.offerMade = form.offerMade.data 
-            offers.offer_date = form.offer_date.data 
-            offers.response = form.response.data
-            offers.response_date = form.response_date.data
-            offers.available = form.available.data'''
+        form_yes = OfferYes()
+        form_no = OfferNo()
+
+        if form_yes.validate():
+            form_yes.populate_obj(offers)
             db.session.add(offers)
             db.session.commit()
-            flash('Offer concluded')
-            return offers
+            flash('Offered')
+            return redirect(url_for('position_view'))
+
+        if form_no.validate():
+            form_no.populate_obj(offers)
+            db.session.add(offers)
+            db.session.commit()
+            flash('Declined')
+            return redirect(url_for('position_view'))
             
 
     def put(self, app_id):
@@ -387,6 +394,8 @@ class OfferView(MethodView):
         offer = OfferModel()
         offer = offer.query.all()
         form = OfferForm()
+        form_yes = OfferYes()
+        form_no = OfferNo()
         post = PositionModel()
         app_review = post.query.filter(\
             PositionModel().username==current_user.username)\
@@ -406,7 +415,9 @@ class OfferView(MethodView):
         #    return render_template('offer_review.html', offer_list=offer, form=form)
         if app_id == None:
             # expose a single user
-            return render_template('offer_review.html', offer_list=offer, app_review_all=app_review_all, form=form)
+            return render_template('offer_review.html', offer_list=offer,\
+                app_review_all=app_review_all,\
+                form=form, form_yes=form_yes, form_no=form_no)
 
         else:
             redirect(url_for('position_view'))

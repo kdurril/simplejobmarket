@@ -70,6 +70,6 @@ app.add_url_rule('/applications/<position_id>',\
 
 #OFFER
 offer_view = OfferView.as_view('offers')
-app.add_url_rule('/offers/', view_func=offer_view, methods=['GET',])
+app.add_url_rule('/offers/', view_func=offer_view, methods=['GET','POST'])
 app.add_url_rule('/offers/<int:offer_id>', view_func=offer_view,\
     methods=['GET', 'PUT', 'DELETE'])
