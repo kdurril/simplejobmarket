@@ -7,7 +7,7 @@ DROP TABLE IF EXISTS jobmarket.students CASCADE;
 DROP TABLE IF EXISTS jobmarket.supervisors CASCADE;
 DROP TABLE IF EXISTS jobmarket.positions CASCADE;
 DROP TABLE IF EXISTS jobmarket.positionApps CASCADE;
-DROP TABLE IF EXISTS jobmarket.offers;
+DROP TABLE IF EXISTS jobmarket.offers CASCADE;
 
 CREATE TABLE jobmarket.roles(
 role_id Serial PRIMARY KEY,
