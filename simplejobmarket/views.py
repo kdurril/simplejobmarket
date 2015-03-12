@@ -349,14 +349,14 @@ class OfferView(MethodView):
             db.session.add(offers)
             db.session.commit()
             flash('Offered')
-            return redirect(url_for('position_view'))
+            return redirect(url_for('student_view'))
 
         if form_no.validate():
             form_no.populate_obj(offers)
             db.session.add(offers)
             db.session.commit()
             flash('Declined')
-            return redirect(url_for('position_view'))
+            return redirect(url_for('student_view'))
             
 
     def put(self, app_id):

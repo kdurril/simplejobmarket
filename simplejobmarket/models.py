@@ -226,7 +226,7 @@ class OfferModel(db.Model):
     response_date = db.Column(db.Date)
     available = db.Column(db.String(120))
     
-    def __init__(self, offer_id=offer_id, app_id=None,
+    def __init__(self, offer_id=None, app_id=None,
                 offer_made=None, offer_date=None,
                 response=None, response_date=None,
                 available=None):
