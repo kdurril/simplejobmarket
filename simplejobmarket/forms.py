@@ -18,11 +18,14 @@ from flask_wtf import Form
 from wtforms import StringField, TextField, TextAreaField, BooleanField,\
                     SelectField, DateField, IntegerField, HiddenField,\
                     RadioField, PasswordField, SubmitField
-from wtforms.validators import DataRequired, Length, Required, Email
+from wtforms.validators import DataRequired, Length, Required, Email, EqualTo,\
+                               InputRequired
 
 class UserForm(Form):
     username = TextField('Directory ID', validators=[Length(min=2, max=128)])
-    password = PasswordField('Password', validators=[Required()])
+    password = PasswordField('New Password', validators=[InputRequired(),\
+                            EqualTo('confirm', message='Passwords must match')])
+    confirm  = PasswordField('Repeat Password')
     role_id = HiddenField('Role ID', default="1")
     #id = HiddenField('ID')
     remember = BooleanField('Stay logged in')
