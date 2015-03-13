@@ -420,3 +420,35 @@ class OfferView(MethodView):
 
         else:
             redirect(url_for('position_view'))
+
+class OfferResponse(MethodView):
+
+    def post(self, username=None):
+        form = OfferForm
+        offer = OfferModel()
+        if form.validate():
+            form.populate_obj(offer)
+            flash('Submission Received')
+            return redirect(url_for('student_view'))
+
+    def put(self):
+        "put is not allowed"
+        pass
+
+    def delete(self):
+        "delete is not allowed"
+        pass
+
+    def get(self, username=None):
+        offer = OfferModel()
+        application = PositionAppModel()
+        form = OfferForm()
+        if current_user.username == username:
+            #get offers based on
+            #app_id
+            #username
+            offer_user = offer.query.join.(PositionAppModel)\
+                              .filter_by(PositionAppModel().username == current_user.username)
+            return render_template('offer_response.html', form=form)
+
+        redirect(url_form('login'))
