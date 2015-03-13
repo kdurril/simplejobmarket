@@ -4,7 +4,7 @@
 from simplejobmarket import app
 from simplejobmarket.views import AuthView, StudentView, SupervisorView,\
                                   PositionView, ApplicationView, OfferView,\
-                                  register, login, logout 
+                                  OfferResponse, register, login, logout 
 
 
 #Authorization
@@ -75,7 +75,7 @@ app.add_url_rule('/offers/<int:offer_id>', view_func=offer_view,\
     methods=['GET', 'PUT', 'DELETE'])
 
 #Response
-response_view = ResponseView.as_view('response')
+response_view = OfferResponse.as_view('response')
 app.add_url_rule('/response/', view_func=response_view, methods=['GET','POST'])
 app.add_url_rule('/response/<username>', view_func=response_view,\
     methods=['GET', 'POST'])

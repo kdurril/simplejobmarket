@@ -447,8 +447,12 @@ class OfferResponse(MethodView):
             #get offers based on
             #app_id
             #username
-            offer_user = offer.query.join.(PositionAppModel)\
-                              .filter_by(PositionAppModel().username == current_user.username)
-            return render_template('offer_response.html', form=form)
+            #offer_user = offer.query.join.(PositionAppModel)\
+            #                  .filter_by(PositionAppModel().username == current_user.username)
+            offer_user = application.query.filter(\
+                PositionAppModel().username==current_user.username)\
+                .join(OfferModel)\
+                .join(PositionModel)
+            return render_template('offer_response.html', form=form, offer_user=offer_user)
 
-        redirect(url_form('login'))
+        return redirect(url_for('student_view'))

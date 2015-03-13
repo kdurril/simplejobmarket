@@ -39,7 +39,7 @@ class RegistrationForm(UserForm):
 
 class StudentForm(Form):
     username = HiddenField('Username')
-    name_last = TextField('Last Name', validators=[Length(min=1, max=100)], default="Smith")
+    name_last = TextField('Last Name', validators=[Length(min=1, max=100)])
     name_first = TextField('First Name', validators=[Length(min=1, max=100)])
     student_uid = TextField('Student UID', validators=[Length(9)])
     email = TextField('Email Address', validators=[Required(), Email()])
