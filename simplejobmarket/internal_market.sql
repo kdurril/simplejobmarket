@@ -94,6 +94,7 @@ response TEXT,
 response_date timestamp default current_timestamp,
 available TEXT,
 CONSTRAINT FKpositionApp FOREIGN KEY (app_id) REFERENCES jobmarket.positionApps,
+CONSTRAINT CHK_offer UNIQUE (app_id, offer_made),
 CONSTRAINT CHK_offer_response UNIQUE (app_id, response)
 );
 
