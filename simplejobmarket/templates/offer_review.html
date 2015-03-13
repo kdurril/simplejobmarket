@@ -19,13 +19,15 @@
     {% for app in app_review_all %}
     <tr>
         <td><form action="{{ url_for('offers') }}" method=post class=add-entry>
-            {{ form_yes.csrf_token }} 
-            {{ form_yes.app_id(value=app.position_apps[0].app_id) }}   
+            {{ form.csrf_token }} 
+            {{ form.app_id(value=app.position_apps[0].app_id) }}
+            {{ form.offer_made(value=1) }}
             {{ form_yes.submit()}}</form>
         </td>
         <td><form action="{{ url_for('offers') }}" method=post class=add-entry>
-            {{ form_no.csrf_token }} 
-            {{ form_no.app_id(value=app.position_apps[0].app_id) }}    
+            {{ form.csrf_token }} 
+            {{ form.app_id(value=app.position_apps[0].app_id) }}
+            {{ form.offer_made(value=0) }}   
             {{ form_no.submit()}}</form>
         </td>
         <td>{{ app.position_apps[0].app_id }}</td>

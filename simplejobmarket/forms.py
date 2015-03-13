@@ -23,16 +23,16 @@ from wtforms.validators import DataRequired, Length, Required, Email, EqualTo,\
 
 class UserForm(Form):
     username = TextField('Directory ID', validators=[Length(min=2, max=128)])
+    password = PasswordField('Password', validators=[Required()])
+    remember = BooleanField('Stay logged in')  
+    submit = SubmitField('Submit')
+
+class RegistrationForm(UserForm):  
     password = PasswordField('New Password', validators=[InputRequired(),\
                             EqualTo('confirm', message='Passwords must match')])
     confirm  = PasswordField('Repeat Password')
-    role_id = HiddenField('Role ID', default="1")
-    #id = HiddenField('ID')
-    remember = BooleanField('Stay logged in')
-    submit = SubmitField('Submit')
-
-class RegistrationForm(UserForm):
     role_id = IntegerField('Role', default=1)
+    #role_id = HiddenField('Role ID', default="1")
     #role_id = SelectField('Role ID',\
     #                      choices=[(1, 1),\
     #                               (2, 2)])
@@ -113,15 +113,16 @@ class OfferForm(Form):
     'Accept or reject applicant by supervisor'
     #offer_id = HiddenField()
     app_id = HiddenField()
+    offer_made = HiddenField(default=0)
     #offer_made = RadioField('Offer', choices=[(1, 'Yes'), (0, 'No')])
     #offer_date = DateField('Open Date') LET THIS BE A AUTO STAMP
     submit = SubmitField('Conclude')
 
 class OfferYes(OfferForm):
-    offer_made = HiddenField(default=1)
+    submit = SubmitField('Offer')
 
 class OfferNo(OfferForm):
-    offer_made = HiddenField(default=0)
+    submit = SubmitField('Reject')
 
 class ResponseForm(Form):
     'This is the version for accepting or rejecting the offer by student'

@@ -346,7 +346,6 @@ class OfferView(MethodView):
 
         if form_yes.validate():
             form_yes.populate_obj(offers)
-            offers.offer_made = 0
             db.session.add(offers)
             db.session.commit()
             flash('Offered')
@@ -354,13 +353,11 @@ class OfferView(MethodView):
 
         if form_no.validate():
             form_no.populate_obj(offers)
-            offers.offer_made = 0
             db.session.add(offers)
             db.session.commit()
             flash('Declined')
             return redirect(url_for('student_view'))
             
-
     def put(self, app_id):
         "response or edit offer"
         #MOVE THIS TO ANOTHER TABLE
