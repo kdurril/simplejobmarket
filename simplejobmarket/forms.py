@@ -111,7 +111,7 @@ class ApplicationForm(Form):
 
 class OfferForm(Form):
     'Accept or reject applicant by supervisor'
-    #offer_id = HiddenField()
+    offer_id = HiddenField()
     app_id = HiddenField()
     offer_made = HiddenField(default=0)
     #offer_made = RadioField('Offer', choices=[(1, 'Yes'), (0, 'No')])
@@ -124,9 +124,10 @@ class OfferYes(OfferForm):
 class OfferNo(OfferForm):
     submit = SubmitField('Reject')
 
-class ResponseForm(Form):
+class ResponseForm(OfferForm):
     'This is the version for accepting or rejecting the offer by student'
-    response = RadioField('Response', choices=[(1, 'Yes'), (0, 'No')])
+    #response = RadioField('Response', choices=[(1, 'Yes'), (0, 'No')])
+    response = HiddenField()
     response_date = HiddenField()
     available = DateField('Date Available')
     submit = SubmitField('Respond')
