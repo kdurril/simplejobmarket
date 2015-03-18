@@ -98,6 +98,16 @@ CONSTRAINT CHK_offer UNIQUE (app_id, offer_made),
 CONSTRAINT CHK_offer_response UNIQUE (app_id, response)
 );
 
+CREATE TABLE jobmarket.responses(
+response_id SERIAL PRIMARY KEY,
+offer_id INTEGER,
+response TEXT, 
+response_date timestamp default current_timestamp,
+available TEXT,
+CONSTRAINT FKoffer FOREIGN KEY (offer_id) REFERENCES jobmarket.offers,
+CONSTRAINT CHK_offer_response UNIQUE (offer_id, response)
+);
+
 CREATE FUNCTION position_avail_to_apply() RETURNS trigger AS $position_avail_to_apply$
     BEGIN    
         -- check position is available
