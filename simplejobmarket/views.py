@@ -15,7 +15,8 @@ from simplejobmarket.models import  UserModel,\
                                     SupervisorModel,\
                                     PositionModel,\
                                     PositionAppModel,\
-                                    OfferModel
+                                    OfferModel,\
+                                    ResponseModel
 
 from simplejobmarket.forms import   UserForm,\
                                     RegistrationForm,\
@@ -424,10 +425,16 @@ class OfferView(MethodView):
 class OfferResponse(MethodView):
 
     def post(self, username=None):
-        form = OfferForm
-        offer = OfferModel()
+        form = ResponseForm()
+        response = ResponseModel()
         if form.validate():
-            form.populate_obj(offer)
+            #form.populate_obj(offer)
+            response.offer_id = form.offer_id.data
+            response.response = form.response.data
+            response.available = form.available.data
+            response.response_date = '2015-03-20'
+            db.session.add(response)
+            db.session.commit()
             flash('Submission Received')
             return redirect(url_for('student_view'))
 
@@ -442,17 +449,25 @@ class OfferResponse(MethodView):
     def get(self, username=None):
         offer = OfferModel()
         application = PositionAppModel()
-        form = OfferForm()
+        position = PositionModel()
+        form = ResponseForm()
         if current_user.username == username:
             #get offers based on
             #app_id
             #username
-            #offer_user = offer.query.join.(PositionAppModel)\
-            #                  .filter_by(PositionAppModel().username == current_user.username)
-            offer_user = application.query.filter(\
-                PositionAppModel().username==current_user.username)\
-                .join(OfferModel)\
-                .join(PositionModel)
-            return render_template('offer_response.html', form=form, offer_user=offer_user)
+            #offer_user = offer.query.filter(PositionAppModel().username == current_user.username)\
+            offer_user = offer.query.join(PositionAppModel)\
+                                    .join(PositionModel)\
+                                    .all()
+                              
+            #offer_user = application.query.filter_by(username=username)
+            #.query.filter(\
+            #    PositionAppModel().username==current_user.username)#\
+                #.join(OfferModel)\
+                #.join(PositionModel)
+            offer_test = application
+            return render_template('offer_response.html', form=form,\
+             offer_user=offer_user, offer_test=offer_test,\
+              offer=offer, application=application, position=position)
 
         return redirect(url_for('student_view'))
