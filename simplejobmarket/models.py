@@ -239,4 +239,25 @@ class OfferModel(db.Model):
         self.available = available
         
     def __repr__(self):
-        return '<Application {0}>'.format(self.app_id)
+        return '<Offer {0}>'.format(self.app_id)
+
+class ResponseModel(db.Model):
+    __tablename__ = 'responses'
+    __table_args__ = {"schema":"jobmarket"}
+    response_id = db.Column(db.Integer, primary_key=True)
+    offer_id = db.Column(db.Integer,\
+               db.ForeignKey('jobmarket.offers.offer_id'))
+    response = db.Column(db.String(120))
+    response_date = db.Column(db.Date)
+    available = db.Column(db.String(120))
+    def __init__(self, response_id=None, offer_id=None,
+                response=None, response_date=None,
+                available=None):
+        self.response_id = response_id
+        self.offer_id = offer_id
+        self.response = response
+        self.response_date = response_date
+        self.available = available
+        
+    def __repr__(self):
+        return '<Response {0}>'.format(self.response_id)
