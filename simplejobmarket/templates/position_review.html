@@ -24,6 +24,22 @@
 </form>
  {% endif %}
 
+ {% macro render_pagination(pagination, position_view) %}
+  <div class=pagination>
+  {% for page in pagination.iter_pages() %}
+    {% if page %}
+      {% if page != pagination.page %}
+        <a href="{{ url_for('positions', page=page) }}">{{ page }}</a>
+      {% else %}
+        <strong>{{ page }}</strong>
+      {% endif %}
+    {% else %}
+      <span class=ellipsis>…</span>
+    {% endif %}
+  {% endfor %}
+  </div>
+{% endmacro %}
+
 {% for entry in position_list %}
     <ul>
         <li>{{entry.position_id}}</li>
