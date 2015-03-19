@@ -15,3 +15,8 @@
 
 #No virtual environment folder
 sjmenv
+
+#
+*students.csv
+*supervisors.csv
+*test_register.txt
