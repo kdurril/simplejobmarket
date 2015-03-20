@@ -271,18 +271,34 @@ class PositionView(MethodView):
         pagination = position.query.paginate(1,1)
         form = PositionForm()
         #if user is owner, decorate to allow put and delete
-        if position_id is None:
-            # return a list of users
-            pagination = position.query.paginate(1,1)
-            return render_template('position_pages.html',\
-            position_id=position_id, position_list=position_all,\
-            pagination=pagination, form=form)
+
+        if current_user.role_id == 2:
+            if position_id is None:
+                # return a list of users
+                position_user = position.query.filter_by(username=current_user.username)
+                pagination = position.query.paginate(1,1)
+                return render_template('position_pages.html',\
+                position_id=position_id, position_list=position_user,\
+                pagination=pagination, form=form)
+            else:
+                position_one = position.query.get(position_id)
+                return render_template('position_pages.html',\
+                        position_id=position_id, position_list=[position_one],\
+                        pagination=pagination, app_submitted=app_submitted,\
+                        exclude_app=exclude_app, form=form)
         else:
-            position_one = position.query.get(position_id)
-            return render_template('position_pages.html',\
-                    position_id=position_id, position_list=[position_one],\
-                    pagination=pagination, app_submitted=app_submitted,\
-                    exclude_app=exclude_app, form=form)
+            if position_id is None:
+                # return a list of users
+                pagination = position.query.paginate(1,1)
+                return render_template('position_pages.html',\
+                position_id=position_id, position_list=position_all,\
+                pagination=pagination, form=form)
+            else:
+                position_one = position.query.get(position_id)
+                return render_template('position_pages.html',\
+                        position_id=position_id, position_list=[position_one],\
+                        pagination=pagination, app_submitted=app_submitted,\
+                        exclude_app=exclude_app, form=form)
 
 #Move to urls
 #app.add_url_rule('/positions/', view_func=PositionView.as_view('positions'), template_name='position_review.html')
