@@ -71,7 +71,14 @@ def logout():
     logout_user()
     return redirect(url_for('student_view'))
 
-#app.add_url_rule('/login', view_func=login, methods=['GET','POST'])
+
+def dashboard(username):
+    'Display of most useful data'
+    'Offer accepted, offers declined, positions available'
+    offers = OfferModel().filter_by(username=current_user.username)
+    positions = PositionModel()
+
+    return render_template('dashboard_student.html', offers=offers, positions=positions)
 
 class AuthView(MethodView):
     'This takes UserModel, UserForms'
@@ -105,7 +112,6 @@ class StudentView(MethodView):
             db.session.commit()
             return redirect('/')
             
-            
         return render_template('student_review.html', student_list=student_update, form=form)
 
     def put(self, student_id):
@@ -115,40 +121,24 @@ class StudentView(MethodView):
         student_update = student.query.get(username)
         current_student = [student_update]
         form = StudentForm()
-        
-        student_update.student_uid=form.student_uid.data
-        student_update.name_last=form.name_last.data
-        student_update.name_first=form.name_first.data
-        student_update.email=form.email.data
-        student_update.phone=form.phone.data
-        student_update.major=form.major.data
-        student_update.program_code=form.program_code.data
-        student_update.sem_begin=form.sem_begin.data
-        student_update.graduation_expected=form.graduation_expected.data
-        student_update.credit_fall=form.credit_fall.data
-        student_update.credit_spring=form.credit_spring.data 
-        student_update.request201408=form.request201408.data
-        student_update.request201501=form.request201501.data
-
-
-        db.session.commit()
+        form.populate_obj(student_update)
 
         if form.validate_on_submit():
-            
-            student_update.student_uid=form.student_uid.data
-            student_update.name_last=form.name_last.data
-            student_update.name_first=form.name_first.data
-            student_update.email=form.email.data
-            student_update.phone=form.phone.data
-            student_update.major=form.major.data
-            student_update.program_code=form.program_code.data
-            student_update.sem_begin=form.sem_begin.data
-            student_update.graduation_expected=form.graduation_expected.data
-            student_update.credit_fall=form.credit_fall.data
-            student_update.credit_spring=form.credit_spring.data 
-            student_update.request201408=form.request201408.data
-            student_update.request201501=form.request201501.data
-
+            form.populate_obj(student_update)
+            #student_update.student_uid=form.student_uid.data
+            #student_update.name_last=form.name_last.data
+            #student_update.name_first=form.name_first.data
+            #student_update.email=form.email.data
+            #student_update.phone=form.phone.data
+            #student_update.major=form.major.data
+            #student_update.program_code=form.program_code.data
+            #student_update.sem_begin=form.sem_begin.data
+            #student_update.graduation_expected=form.graduation_expected.data
+            #student_update.credit_fall=form.credit_fall.data
+            #student_update.credit_spring=form.credit_spring.data 
+            #student_update.request_fall=form.request_fall.data
+            #student_update.request_spring=form.request_spring.data
+            db.session.add(student_update)
             db.session.commit()
             return redirect('/')
         return redirect('/')

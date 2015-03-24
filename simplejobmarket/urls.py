@@ -4,7 +4,8 @@
 from simplejobmarket import app
 from simplejobmarket.views import AuthView, StudentView, SupervisorView,\
                                   PositionView, ApplicationView, OfferView,\
-                                  OfferResponse, register, login, logout 
+                                  OfferResponse, register, login, logout,\
+                                  dashboard 
 
 
 #Authorization
@@ -25,6 +26,8 @@ def supervisor_required(f):
         return f(*args, **kwargs)
     return decorator
 
+#Dashboard
+app.add_url_rule('/<username>/dashboard', view_func=dashboard, methods=['GET'])
 
 #Student
 student_view = StudentView.as_view('student_view')
