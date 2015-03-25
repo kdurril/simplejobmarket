@@ -2,13 +2,12 @@
 {% block body %}
 
 <h2></h2>
-<h2>{{ app_review_all[0].position_id }} {{ app_review_all[0].title}}</h2>
+<h2>{{ position[0].position_id }} {{ position[0].title}}</h2> 
 <table class=offer>
     <tr>
         <th>Offer</th>
         <th>Decline</th>
         <th>app_id</th>
-        
         
         <th>position name</th>
         <th>student username</th>
@@ -20,21 +19,21 @@
     <tr>
         <td><form action="{{ url_for('offers') }}" method=post class=add-entry>
             {{ form.csrf_token }} 
-            {{ form.app_id(value=app.position_apps[0].app_id) }}
+            {{ form.app_id(value=app.app_id) }}
             {{ form.offer_made(value=1) }}
             {{ form_yes.submit()}}</form>
         </td>
         <td><form action="{{ url_for('offers') }}" method=post class=add-entry>
             {{ form.csrf_token }} 
-            {{ form.app_id(value=app.position_apps[0].app_id) }}
+            {{ form.app_id(value=app.app_id) }}
             {{ form.offer_made(value=0) }}   
             {{ form_no.submit()}}</form>
         </td>
-        <td>{{ app.position_apps[0].app_id }}</td>
-        <td>{{ app.position_apps[0].students.username }}</td>
-        <td>{{ app.position_apps[0].students.name_last }}</td>
-        <td>{{ app.position_apps[0].students.name_first }}</td>
-        <td>{{ app.position_apps[0].students.email }}</td>
+        <td>{{ app.app_id }}</td>
+        <td>{{ app.students.username }}</td>
+        <td>{{ app.students.name_last }}</td>
+        <td>{{ app.students.name_first }}</td>
+        <td>{{ app.students.email }}</td>
     </tr>
 
     {% endfor%}

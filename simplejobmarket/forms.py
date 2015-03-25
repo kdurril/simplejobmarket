@@ -111,7 +111,6 @@ class ApplicationForm(Form):
 
 class OfferForm(Form):
     'Accept or reject applicant by supervisor'
-    offer_id = HiddenField()
     app_id = HiddenField()
     offer_made = HiddenField(default=0)
     #offer_made = RadioField('Offer', choices=[(1, 'Yes'), (0, 'No')])

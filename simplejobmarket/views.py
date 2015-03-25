@@ -76,7 +76,13 @@ def dashboard(username):
     'Display of most useful data'
     'Offer accepted, offers declined, positions available'
     offers = OfferModel().filter_by(username=current_user.username)
-    positions = PositionModel()
+    post = PositionModel()
+    positionapps = PositionAppModel()
+    app_review = post.query.filter(\
+            PositionModel().username==current_user.username)\
+            .join(PositionAppModel)\
+            .join(StudentModel)
+    
 
     return render_template('dashboard_student.html', offers=offers, positions=positions)
 
@@ -370,7 +376,7 @@ class OfferView(MethodView):
         #MOVE THIS TO ANOTHER TABLE
         offers = OfferModel()
 
-        if current_user.role_id == 1:
+        if current_user.role_id == 2:
             #Student response
             form = ResponseForm()
             if form.validate():
@@ -403,26 +409,25 @@ class OfferView(MethodView):
         form_yes = OfferYes()
         form_no = OfferNo()
         post = PositionModel()
-        app_review = post.query.filter(\
-            PositionModel().username==current_user.username)\
-            .join(PositionAppModel)\
-            .join(StudentModel)
-        app_review_all = app_review.all()
-
-
+        student_app = PositionAppModel()
         
+        position = post.query.filter_by(username=current_user.username).all()
         #if user is owner, decorate to allow put and delete
         #if offer_id is owner:
             # return a list of users
         #    pass
         #if user is applicant offered position, allow view of its offers
         #elif offer_id is applicant:
-            
-        #    return render_template('offer_review.html', offer_list=offer, form=form)
-        if app_id == None:
+        if current_user.role_id == 2:
             # expose a single user
+            app_review = student_app.query\
+            .join(StudentModel)\
+            .join(PositionModel).filter_by(username=current_user.username)
+            app_review_all = app_review.all()
+
             return render_template('offer_review.html', offer_list=offer,\
-                app_review_all=app_review_all,\
+                app_review=app_review, app_review_all=app_review_all,\
+                position=position, student_app=PositionAppModel(),\
                 form=form, form_yes=form_yes, form_no=form_no)
 
         else:
