@@ -126,6 +126,7 @@ class OfferNo(OfferForm):
 class ResponseForm(OfferForm):
     'This is the version for accepting or rejecting the offer by student'
     #response = RadioField('Response', choices=[(1, 'Yes'), (0, 'No')])
+    offer_id = HiddenField()
     response = HiddenField()
     response_date = HiddenField()
     available = DateField('Date Available')
