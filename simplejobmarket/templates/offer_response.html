@@ -4,39 +4,42 @@
 <h2></h2>
 <h2>{{current_user.username  }} </h2>
 <h2>{{ offer_user.username }} </h2>
+
 <table class=offer>
     <tr>
         <th>Accept</th>
         <th>Decline</th>
-        <th>app_id</th>
         
-        <th>position name</th>
-        <th>student username</th>
-        <th>student email</th>
+        
+        <th>position id</th>
+        <th>position title</th>
+        <th>position supervisor</th>
         <th>student first name</th>
         <th>student last name</th>
     </tr>
 
     {% for app in offer_user %}
     <tr>
-        <td><form action="{{ url_for('response') }}" method=post class=add-entry>
-            
+        <td>
+            <form action="{{ url_for('response') }}" method=post class=add-entry>
             {{ form.csrf_token }} 
             {{ form.offer_id(value=app.offer_id) }}
             {{ form.response(value=1) }}
-            {{ form.submit(value='Accept')}}</form>
+            {{ form.submit(value='Accept')}}
+            </form>
         </td>
-        <td><form action="{{ url_for('response') }}" method=post class=add-entry>
+        <td>
+            <form action="{{ url_for('response') }}" method=post class=add-entry>
             {{ form.csrf_token }} 
             {{ form.offer_id(value=app.offer_id) }}
             {{ form.response(value=0) }}   
-            {{ form.submit(value='Decline')}}</form>
+            {{ form.submit(value='Decline')}}
+            </form>
         </td>
-        <td>{{ app.positionapps.username }}</td>
+        
         <td>{{ app.positionapps.position_id }}</td>
         <td>{{ app.positionapps.positions.username }}</td>
         <td>{{ app.positionapps.positions.title }}</td>
-        <td>{{ app }}</td>
     </tr>
 
     {% endfor%}

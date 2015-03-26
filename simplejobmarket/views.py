@@ -33,6 +33,9 @@ from simplejobmarket.forms import   UserForm,\
 from simplejobmarket.models import db
 
 from flask.ext.login import login_user, logout_user, login_required, current_user
+import datetime
+
+
 
 #db.sessionmaker
 
@@ -443,7 +446,7 @@ class OfferResponse(MethodView):
             response.offer_id = form.offer_id.data
             response.response = form.response.data
             response.available = form.available.data
-            response.response_date = '2015-03-20'
+            response.response_date = datetime.datetime.now()
             db.session.add(response)
             db.session.commit()
             flash('Submission Received')
@@ -469,14 +472,22 @@ class OfferResponse(MethodView):
             #offer_user = offer.query.filter(PositionAppModel().username == current_user.username)\
             offer_user = offer.query.join(PositionAppModel)\
                                     .join(PositionModel)\
+                                    .filter(PositionAppModel.username==current_user.username)\
                                     .all()
-                              
             #offer_user = application.query.filter_by(username=username)
             #.query.filter(\
             #    PositionAppModel().username==current_user.username)#\
                 #.join(OfferModel)\
                 #.join(PositionModel)
-            offer_test = application
+            position_alias = db.aliased(PositionAppModel)
+            #a = (position_alias, offer.usename == user_alias.username)
+            #(position_alias, position_alias.username == current_user.username)
+            # position.query.filter_by(username=current_user.username)
+            offer_test = offer.query.join(PositionAppModel)\
+                                    .join(PositionModel)\
+                                    .filter(PositionAppModel.username==current_user.username)\
+                                    .all()
+
             return render_template('offer_response.html', form=form,\
              offer_user=offer_user, offer_test=offer_test,\
               offer=offer, application=application, position=position)
