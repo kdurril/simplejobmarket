@@ -86,7 +86,6 @@ def dashboard(username):
             .join(PositionAppModel)\
             .join(StudentModel)
     
-
     return render_template('dashboard_student.html', offers=offers, positions=positions)
 
 class AuthView(MethodView):
@@ -267,7 +266,7 @@ class PositionView(MethodView):
         applications = PositionAppModel()
         app_submitted = applications.query.filter_by(username=current_user.username)
         exclude_app = [str(x.position_id) for x in app_submitted]
-        pagination = position.query.paginate(1,1)
+        pagination = position.query.paginate(2,2)
         form = PositionForm()
         #if user is owner, decorate to allow put and delete
 
@@ -288,7 +287,7 @@ class PositionView(MethodView):
         else:
             if position_id is None:
                 # return a list of users
-                pagination = position.query.paginate(1,1)
+                pagination = position.query.paginate(2,2)
                 return render_template('position_pages.html',\
                 position_id=position_id, position_list=position_all,\
                 pagination=pagination, form=form)
