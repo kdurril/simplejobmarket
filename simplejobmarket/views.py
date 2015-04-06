@@ -78,7 +78,12 @@ def logout():
 def dashboard(username):
     'Display of most useful data'
     'Offer accepted, offers declined, positions available'
-    offers = OfferModel().filter_by(username=current_user.username)
+    #form_app=ApplicationForm()
+    form_offer = OfferForm()
+    form_yes = OfferYes()
+    form_no = OfferNo()
+    offers = OfferModel().query.\
+                          join(PositionAppModel)
     post = PositionModel()
     positionapps = PositionAppModel()
     app_review = post.query.filter(\
@@ -86,7 +91,7 @@ def dashboard(username):
             .join(PositionAppModel)\
             .join(StudentModel)
     
-    return render_template('dashboard_student.html', offers=offers, positions=positions)
+    return render_template('dashboard_student.html', offers=offers, positions=app_review, form=form_offer)
 
 class AuthView(MethodView):
     'This takes UserModel, UserForms'
