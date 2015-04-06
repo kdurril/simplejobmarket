@@ -3,55 +3,51 @@
 
 
 <div>Dashboard</div>
+
 <div>Offer Accepted</div>
+
 <div>Offers Outstanding</div>
+<table class=offer>
+    <tr>
+        <th>Accept</th>
+        <th>Decline</th>
+        
+        
+        <th>position id</th>
+        <th>position title</th>
+        <th>position supervisor</th>
+        <th>student first name</th>
+        <th>student last name</th>
+    </tr>
+
+    {% for app in offer_user %}
+    <tr>
+        <td>
+            <form action="{{ url_for('response') }}" method=post class=add-entry>
+            {{ form.csrf_token }} 
+            {{ form.offer_id(value=app.offer_id) }}
+            {{ form.response(value=1) }}
+            {{ form.submit(value='Accept')}}
+            </form>
+        </td>
+        <td>
+            <form action="{{ url_for('response') }}" method=post class=add-entry>
+            {{ form.csrf_token }} 
+            {{ form.offer_id(value=app.offer_id) }}
+            {{ form.response(value=0) }}   
+            {{ form.submit(value='Decline')}}
+            </form>
+        </td>
+        
+        <td>{{ app.positionapps.position_id }}</td>
+        <td>{{ app.positionapps.positions.username }}</td>
+        <td>{{ app.positionapps.positions.title }}</td>
+    </tr>
+
+    {% endfor%}
+</table>
+
 <div>Positions Available</div>
 
 
-
-<table class=student>
-    <tr>
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>Email</th>
-        <th>Phone</th>
-        <th>Specialization</th>
-        <th>Program</th>
-        <th>First Semester</th>
-    </tr>
-    
-    <form action="{{ url_for('student_view') }}" method=post class=add-entry>
-        {{ form.csrf_token }}
-        <div>{{ form.student_uid.label }}: {{ form.student_uid() }}</div>
-        <div>{{ form.name_last.label }}: {{ form.name_last() }}</div>
-        <div>{{ form.name_first.label }}: {{ form.name_first() }}</div>
-        <div>{{ form.email.label }}: {{ form.email() }}</div>
-        <div>{{ form.phone.label }}: {{ form.phone() }}</div>
-        <div>{{ form.major.label }}: {{ form.major() }}</div>
-        <div>{{ form.program_code.label }}: {{ form.program_code() }}</div>
-        <div>{{ form.sem_begin.label }}: {{ form.sem_begin() }}</div>
-        <div>{{ form.graduation_expected.label }}: {{ form.graduation_expected() }}</div>
-        <div>{{ form.credit_fall.label }}: {{ form.credit_fall() }}</div>
-        <div>{{ form.credit_spring.label }}: {{ form.credit_spring() }}</div>
-        <div>{{ form.request_fall.label }}: {{ form.request_fall() }}</div>
-        <div>{{ form.request_spring.label }}: {{ form.request_spring() }}</div>
-     
-       <input type=submit value=send>
-       </form>
-      </table>
-<table>
-{% for entry in student_list %}
-    <tr>
-        <td>{{ entry.name_last }}</td>
-        <td>{{ entry.name_first }} </td>
-        <td>{{ entry.email }}</td>
-        <td>{{ entry.phone }}</td>
-        <td>{{ entry.student_uid }}</td>
-        <td> {{ entry.major }}</td>
-        <td>{{ entry.program_code }}</td>
-        <td> {{ entry.sem_begin }}</td>
-        <td></td>
-    <tr>
-{% endfor %}
-</table>
 {% endblock %}
